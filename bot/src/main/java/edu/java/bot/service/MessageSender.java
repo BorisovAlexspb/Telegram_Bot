@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-@SuppressWarnings("ImportOrder")
+@SuppressWarnings("MultipleStringLiterals")
 public class MessageSender implements Runnable {
     private static final Logger LOG = Logger.getLogger(MessageSender.class.getName());
     private static final int SENDER_SLEEP_TIME = 1000;
@@ -37,9 +37,9 @@ public class MessageSender implements Runnable {
 
     private void send(Object object) {
         try {
-            MessageType messageType = messageType(object);
+            String messageType = isBotApiMethod(object);
             switch (messageType) {
-                case EXECUTE:
+                case "EXECUTE":
                     BotApiMethod<Message> message = (BotApiMethod<Message>) object;
                     LOG.info("Use Execute for " + object);
                     bot.execute(message);
@@ -52,14 +52,10 @@ public class MessageSender implements Runnable {
         }
     }
 
-    private MessageType messageType(Object object) {
+    private String isBotApiMethod(Object object) {
         if (object instanceof BotApiMethod) {
-            return MessageType.EXECUTE;
+            return "EXECUTE";
         }
-        return MessageType.NOT_DETECTED;
-    }
-
-    enum MessageType {
-        EXECUTE, NOT_DETECTED,
+        return "NOT_DETECTED";
     }
 }

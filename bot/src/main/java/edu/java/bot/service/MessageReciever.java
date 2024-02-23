@@ -32,7 +32,7 @@ public class MessageReciever implements Runnable {
         while (true) {
             for (Object object = bot.receiveQueue.poll(); object != null; object = bot.receiveQueue.poll()) {
                 LOG.info("New object for analyze in queue " + object.toString());
-                analyze(object);
+                isUpdateMethod(object);
             }
             try {
                 Thread.sleep(WAIT_FOR_NEW_MESSAGE_DELAY);
@@ -43,7 +43,7 @@ public class MessageReciever implements Runnable {
         }
     }
 
-    private void analyze(Object object) {
+    private void isUpdateMethod(Object object) {
         if (object instanceof Update) {
             Update update = (Update) object;
             LOG.info("Update recieved: " + update);
@@ -62,7 +62,7 @@ public class MessageReciever implements Runnable {
 
         String operationResult = handlerForCommand.operate(chatId.toString(), parsedCommand, update);
 
-        if (!"".equals(operationResult)) {
+        if (!operationResult.isBlank()) {
             SendMessage message = new SendMessage();
             message.setChatId(chatId);
             message.setText(operationResult);

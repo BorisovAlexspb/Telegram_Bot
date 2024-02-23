@@ -7,7 +7,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class SystemHandler extends AbstractHandler {
-    //    private static final Logger log = Logger.getLogger(SystemHandler.class.getName());
     private static final String END_LINE = "\n";
 
     public SystemHandler(Bot bot) {
@@ -40,8 +39,6 @@ public class SystemHandler extends AbstractHandler {
         text.append("[/start](/start) - show start message").append(END_LINE);
         text.append("[/help](/help) - show help message").append(END_LINE);
         text.append("[/id](/id) - know your ID in telegram ").append(END_LINE);
-        text.append("/*notify* _time-in-sec_  - receive notification from me after the specified time")
-            .append(END_LINE);
 
         sendMessage.setText(text.toString());
         return sendMessage;

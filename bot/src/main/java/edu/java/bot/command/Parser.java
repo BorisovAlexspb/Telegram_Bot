@@ -1,8 +1,6 @@
 package edu.java.bot.command;
 
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -12,8 +10,6 @@ public class Parser {
     private static final String PREFIX_FOR_COMMAND = "/";
     private static final String DELIMITER_COMMAND_BOTNAME = "@";
     private String botName;
-    private static final Pattern URL_PATTERN =
-        Pattern.compile("\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]");
 
     public Parser(String botName) {
         this.botName = botName;
@@ -86,8 +82,4 @@ public class Parser {
         return text.startsWith(PREFIX_FOR_COMMAND);
     }
 
-    private boolean checkURL(String path) {
-        Matcher matcher = URL_PATTERN.matcher(path);
-        return matcher.matches();
-    }
 }
