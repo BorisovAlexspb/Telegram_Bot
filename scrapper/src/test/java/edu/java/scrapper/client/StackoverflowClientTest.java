@@ -7,8 +7,8 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import edu.java.client.StackOverflowClient;
-import edu.java.configuration.ClientConfiguration;
+import edu.java.client.stackoverflow.StackOverflowClient;
+import edu.java.client.stackoverflow.StackOverflowWebClient;
 import model.stackoverflow.QuestionResponse;
 import model.stackoverflow.QuestionsResponse;
 import org.junit.Test;
@@ -16,14 +16,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class StackoverflowClientTest {
 
-    private WireMockServer wireMockServer = new WireMockServer();
-    private final ClientConfiguration configuration = new ClientConfiguration();
-
+    private WireMockServer wireMockServer = new WireMockServer(8080);
+    private final StackOverflowClient client = new StackOverflowWebClient("http://localhost:8080");
     @Test
     public void test() {
         wireMockServer.start();
 
-        stubFor(get("/2.3/questions/123?order=desc&sort=activity&site=stackoverflow").willReturn(okJson(
+        stubFor(get("/questions/123").willReturn(okJson(
             """
                 {
                     "items": [
@@ -35,7 +34,6 @@ public class StackoverflowClientTest {
                  """
         )));
 
-        StackOverflowClient client = configuration.stackOverflowClient("http://localhost:8080");
         OffsetDateTime expected = OffsetDateTime.ofInstant(Instant.ofEpochSecond(1594829479), ZoneOffset.UTC);
 
         QuestionsResponse response = client.getLastModificationTime(123);
