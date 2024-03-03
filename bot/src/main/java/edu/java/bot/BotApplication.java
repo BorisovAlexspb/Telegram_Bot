@@ -3,6 +3,7 @@ package edu.java.bot;
 import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.service.MessageReciever;
 import edu.java.bot.service.MessageSender;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -18,6 +19,8 @@ public class BotApplication {
     private static final String BOT_ADMIN = "";
 
     public static void main(String[] args) throws TelegramApiException {
+
+        SpringApplication.run(BotApplication.class, args);
 
         Bot testBot = new Bot("myBot", System.getenv("APP_TELEGRAM_TOKEN"));
         MessageReciever messageReciever = new MessageReciever(testBot);

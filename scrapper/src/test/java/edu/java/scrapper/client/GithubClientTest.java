@@ -8,8 +8,7 @@ import java.time.format.DateTimeFormatter;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import edu.java.client.github.GitHubClient;
 import edu.java.client.github.GitHubWebClient;
-import edu.java.configuration.ClientConfiguration;
-import model.github.RepositoryResponse;
+import edu.java.dto.github.RepositoryResponse;
 import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
