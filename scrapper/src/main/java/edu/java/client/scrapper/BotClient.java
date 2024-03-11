@@ -4,6 +4,6 @@ import edu.java.dto.bot.LinkUpdateRequest;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.RequestBody;
 
-public interface ScrapperClient {
+public interface BotClient {
     Optional<String> sendUpdate(@RequestBody LinkUpdateRequest request);
 }

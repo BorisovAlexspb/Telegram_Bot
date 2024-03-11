@@ -3,14 +3,14 @@ package edu.java.dto.bot;
 import java.util.Arrays;
 import java.util.List;
 
-public record ApiErrorResponce(
+public record ApiErrorResponse(
     String description,
     String code,
     String exceptionName,
     String exceptionMessage,
     List<String> stacktrace
 ) {
-    public ApiErrorResponce(String description, String code, Exception e) {
+    public ApiErrorResponse(String description, String code, Exception e) {
         this(
             description,
             code,

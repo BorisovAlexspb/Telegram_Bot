@@ -1,8 +1,8 @@
 package edu.java.controller;
 
 import edu.java.dto.bot.AddLinkRequest;
-import edu.java.dto.bot.LinkResponce;
-import edu.java.dto.bot.ListLinksResponce;
+import edu.java.dto.bot.LinkResponse;
+import edu.java.dto.bot.ListLinksResponse;
 import edu.java.dto.bot.RemoveLinkRequest;
 import java.util.List;
 import lombok.extern.log4j.Log4j2;
@@ -29,28 +29,28 @@ public class ScrapperController {
     }
 
     @GetMapping("/links")
-    public ListLinksResponce getAllLimks(@RequestParam(name = "Tg-Chat-id") String id) {
-        ListLinksResponce responce = new ListLinksResponce(List.of());
+    public ListLinksResponse getAllLinks(@RequestParam(name = "Tg-Chat-id") String id) {
+        ListLinksResponse responce = new ListLinksResponse(List.of());
         log.info("Return all links " + responce + "for chat " + id);
         return responce;
     }
 
     @PostMapping("/links")
-    public LinkResponce addLink(
+    public LinkResponse addLink(
         @RequestParam(name = "Tg-Chat-Id") String id,
         @RequestBody AddLinkRequest link
     ) {
         log.info("Added link " + link + "to chat id " + id);
-        return new LinkResponce(Long.parseLong(id), link.link());
+        return new LinkResponse(Long.parseLong(id), link.link());
     }
 
     @DeleteMapping("/links")
-    public LinkResponce removeLink(
+    public LinkResponse removeLink(
         @RequestParam(name = "Tg-Chat-Id") String id,
         @RequestBody RemoveLinkRequest link
     ) {
         log.info("Removed link " + link + " from chat " + id);
-        return new LinkResponce(Long.parseLong(id), link.uri().normalize());
+        return new LinkResponse(Long.parseLong(id), link.uri().normalize());
     }
 }
 

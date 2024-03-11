@@ -1,28 +1,27 @@
 package edu.java.exception;
 
-import edu.java.dto.bot.ApiErrorResponce;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-public class ScrapperControllerExceptionHandler {
+@RestControllerAdvice
+public class ScrapperExceptionHandler {
 
     private static final String BAD_ERROR = "400";
     private static final String NOT_FOUND = "404";
 
     @ExceptionHandler(BadRequestException.class)
-    protected ResponseEntity<ApiErrorResponce> handleBadRequestException(BadRequestException e) {
-        ApiErrorResponce responce = new ApiErrorResponce("Bad request", BAD_ERROR, e);
+    protected ResponseEntity<String> handleBadRequestException(BadRequestException e) {
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
-            .body(responce);
+            .body(HttpStatus.BAD_REQUEST.name());
     }
 
     @ExceptionHandler(NotFoundException.class)
-    protected ResponseEntity<ApiErrorResponce> handleNotFoundException(NotFoundException e) {
-        ApiErrorResponce responce = new ApiErrorResponce("Not found", NOT_FOUND, e);
+    protected ResponseEntity<String> handleNotFoundException(NotFoundException e) {
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
-            .body(responce);
+            .body(HttpStatus.NOT_FOUND.name());
     }
 }

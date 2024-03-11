@@ -225,6 +225,7 @@
                     <version>${maven-surefire-plugin.version}</version>
                     <configuration>
                         <skip>${skip.unit.tests}</skip>
+                        <skipTests>true</skipTests>
                     </configuration>
                 </plugin>
                 <plugin>

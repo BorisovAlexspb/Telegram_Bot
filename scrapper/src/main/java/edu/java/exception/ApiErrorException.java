@@ -1,13 +1,13 @@
 package edu.java.exception;
 
-import edu.java.dto.bot.ApiErrorResponce;
+import edu.java.dto.bot.ApiErrorResponse;
 import lombok.Getter;
 
 @Getter
 public class ApiErrorException extends RuntimeException {
-    private final ApiErrorResponce errorResponse;
+    private final ApiErrorResponse errorResponse;
 
-    public ApiErrorException(ApiErrorResponce errorResponse) {
+    public ApiErrorException(ApiErrorResponse errorResponse) {
         this.errorResponse = errorResponse;
     }
 }

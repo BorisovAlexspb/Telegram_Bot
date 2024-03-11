@@ -1,9 +1,9 @@
 package edu.java.bot.client;
 
 import edu.java.bot.dto.AddLinkRequest;
-import edu.java.bot.dto.ApiErrorResponce;
-import edu.java.bot.dto.LinkResponce;
-import edu.java.bot.dto.ListLinkResponce;
+import edu.java.bot.dto.ApiErrorResponse;
+import edu.java.bot.dto.LinkResponse;
+import edu.java.bot.dto.ListLinkResponse;
 import edu.java.bot.dto.RemoveLinkRequest;
 import edu.java.bot.exception.ApiException;
 import java.util.Optional;
@@ -13,14 +13,14 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-public class BotClient {
+public class ScrapperClient {
     private final WebClient webClient;
 
     private final static String PATH_TO_CHAT = "tg-chat/{id}";
     private final static String PATH_TO_LINK = "/links";
     private final static String HEADER_NAME = "Tg-Chat-Id";
 
-    public BotClient(String baseUrl) {
+    public ScrapperClient(String baseUrl) {
         this.webClient = WebClient.create(baseUrl);
     }
 
@@ -32,7 +32,7 @@ public class BotClient {
             .onStatus(
                 HttpStatusCode::is4xxClientError,
                 response -> response
-                    .bodyToMono(ApiErrorResponce.class)
+                    .bodyToMono(ApiErrorResponse.class)
                     .flatMap(errorResponse -> Mono.error(new ApiException(errorResponse)))
             )
             .bodyToMono(String.class)
@@ -47,14 +47,14 @@ public class BotClient {
             .onStatus(
                 HttpStatusCode::is4xxClientError,
                 response -> response
-                    .bodyToMono(ApiErrorResponce.class)
+                    .bodyToMono(ApiErrorResponse.class)
                     .flatMap(errorResponse -> Mono.error(new ApiException(errorResponse)))
             )
             .bodyToMono(String.class)
             .blockOptional();
     }
 
-    public Optional<ListLinkResponce> getLinks(Long id) {
+    public Optional<ListLinkResponse> getLinks(Long id) {
         return webClient
             .get()
             .uri(PATH_TO_LINK)
@@ -63,14 +63,14 @@ public class BotClient {
             .onStatus(
                 HttpStatusCode::is4xxClientError,
                 response -> response
-                    .bodyToMono(ApiErrorResponce.class)
+                    .bodyToMono(ApiErrorResponse.class)
                     .flatMap(errorResponse -> Mono.error(new ApiException(errorResponse)))
             )
-            .bodyToMono(ListLinkResponce.class)
+            .bodyToMono(ListLinkResponse.class)
             .blockOptional();
     }
 
-    public Optional<LinkResponce> addLink(Long id, AddLinkRequest request) {
+    public Optional<LinkResponse> addLink(Long id, AddLinkRequest request) {
         return webClient
             .post()
             .uri(PATH_TO_LINK)
@@ -80,14 +80,14 @@ public class BotClient {
             .onStatus(
                 HttpStatusCode::is4xxClientError,
                 response -> response
-                    .bodyToMono(ApiErrorResponce.class)
+                    .bodyToMono(ApiErrorResponse.class)
                     .flatMap(errorResponse -> Mono.error(new ApiException(errorResponse)))
             )
-            .bodyToMono(LinkResponce.class)
+            .bodyToMono(LinkResponse.class)
             .blockOptional();
     }
 
-    public Optional<LinkResponce> removeLink(Long id, RemoveLinkRequest request) {
+    public Optional<LinkResponse> removeLink(Long id, RemoveLinkRequest request) {
         return webClient.method(HttpMethod.DELETE)
             .uri(PATH_TO_LINK)
             .header(HEADER_NAME, String.valueOf(id))
@@ -96,10 +96,10 @@ public class BotClient {
             .onStatus(
                 HttpStatusCode::is4xxClientError,
                 response -> response
-                    .bodyToMono(ApiErrorResponce.class)
+                    .bodyToMono(ApiErrorResponse.class)
                     .flatMap(errorResponse -> Mono.error(new ApiException(errorResponse)))
             )
-            .bodyToMono(LinkResponce.class)
+            .bodyToMono(LinkResponse.class)
             .blockOptional();
     }
 
