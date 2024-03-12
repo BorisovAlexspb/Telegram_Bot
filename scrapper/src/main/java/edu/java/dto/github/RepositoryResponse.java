@@ -1,4 +1,4 @@
-package model.github;
+package edu.java.dto.github;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

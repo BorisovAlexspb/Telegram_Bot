@@ -9,8 +9,8 @@ import java.time.ZoneOffset;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import edu.java.client.stackoverflow.StackOverflowClient;
 import edu.java.client.stackoverflow.StackOverflowWebClient;
-import model.stackoverflow.QuestionResponse;
-import model.stackoverflow.QuestionsResponse;
+import edu.java.dto.stackoverflow.QuestionResponse;
+import edu.java.dto.stackoverflow.QuestionsResponse;
 import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 

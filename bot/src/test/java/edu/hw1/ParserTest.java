@@ -1,8 +1,8 @@
 package edu.hw1;
 
-import edu.java.bot.command.Command;
-import edu.java.bot.command.ParsedCommand;
-import edu.java.bot.command.Parser;
+import edu.java.bot.logic.command.Command;
+import edu.java.bot.logic.command.ParsedCommand;
+import edu.java.bot.logic.command.Parser;
 import org.junit.Before;
 import org.junit.Test;
 

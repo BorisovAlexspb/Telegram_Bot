@@ -19,3 +19,7 @@ api:
     baseURL: https://api.github.com/
   stackoverflow:
     baseURL: https://api.stackexchange.com/
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui

@@ -1,4 +1,4 @@
-package edu.java.bot.command;
+package edu.java.bot.logic.command;
 
 public enum Command {
     START,
