@@ -1,8 +1,8 @@
-package edu.java.bot.handler;
+package edu.java.bot.logic.handler;
 
 import edu.java.bot.Bot;
-import edu.java.bot.command.Command;
-import edu.java.bot.command.ParsedCommand;
+import edu.java.bot.logic.command.Command;
+import edu.java.bot.logic.command.ParsedCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 

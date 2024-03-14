@@ -1,4 +1,4 @@
-package model.stackoverflow;
+package edu.java.dto.stackoverflow;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;

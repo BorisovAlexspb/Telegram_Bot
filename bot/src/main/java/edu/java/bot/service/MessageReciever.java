@@ -1,15 +1,15 @@
 package edu.java.bot.service;
 
 import edu.java.bot.Bot;
-import edu.java.bot.command.Command;
-import edu.java.bot.command.ParsedCommand;
-import edu.java.bot.command.Parser;
-import edu.java.bot.handler.AbstractHandler;
-import edu.java.bot.handler.DefaultHandler;
-import edu.java.bot.handler.ListHandler;
-import edu.java.bot.handler.SystemHandler;
-import edu.java.bot.handler.TrackHandler;
-import edu.java.bot.handler.UntrackHandler;
+import edu.java.bot.logic.command.Command;
+import edu.java.bot.logic.command.ParsedCommand;
+import edu.java.bot.logic.command.Parser;
+import edu.java.bot.logic.handler.AbstractHandler;
+import edu.java.bot.logic.handler.DefaultHandler;
+import edu.java.bot.logic.handler.ListHandler;
+import edu.java.bot.logic.handler.SystemHandler;
+import edu.java.bot.logic.handler.TrackHandler;
+import edu.java.bot.logic.handler.UntrackHandler;
 import java.util.logging.Logger;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;

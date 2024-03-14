@@ -1,7 +1,7 @@
 package edu.java.client.github;
 
+import edu.java.dto.github.RepositoryResponse;
 import jakarta.validation.constraints.NotNull;
-import model.github.RepositoryResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.reactive.function.client.WebClient;
 

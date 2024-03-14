@@ -1,4 +1,4 @@
-package edu.java.bot.command;
+package edu.java.bot.logic.command;
 
 import java.util.logging.Logger;
 import org.apache.commons.lang3.tuple.MutablePair;
