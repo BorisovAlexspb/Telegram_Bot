@@ -7,5 +7,5 @@ import java.time.OffsetDateTime;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record QuestionResponse(@JsonFormat(timezone = "UTC")
-                               OffsetDateTime lastActivityDate) {
+                               OffsetDateTime lastActivityDate, Integer answerCount) {
 }

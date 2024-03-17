@@ -1,10 +1,10 @@
 package edu.java.client.stackoverflow;
 
+import edu.java.dto.UpdateInfo;
 import edu.java.dto.stackoverflow.QuestionsResponse;
 import edu.java.model.Link;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.OffsetDateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -33,17 +33,27 @@ public class StackOverflowWebClient implements StackOverflowClient {
     }
 
     @Override
-    public OffsetDateTime checkForUpdate(Link link) {
-        try {
-            var uri = new URI(link.getUrl());
-            String[] pathParts = uri.getPath().split("/");
-            Long questionId = Long.parseLong(pathParts[pathParts.length - 2]);
-
-            QuestionsResponse response = getLastModificationTime(questionId);
-            return response.items().getFirst().lastActivityDate();
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Link url is invalid (Could not parse to URI)" + link.getUrl(), e);
+    public UpdateInfo checkForUpdate(Link link, int answerCount) {
+        QuestionsResponse response = getLastModificationTime(getQuestionId(link.getUrl()));
+        var question = response.items().getFirst();
+        if (question.lastActivityDate().isAfter(link.getUpdatedAt())) {
+            if (question.answerCount() > answerCount) {
+                return new UpdateInfo(true, question.lastActivityDate(), "Появился новый ответ");
+            }
+            return new UpdateInfo(true, question.lastActivityDate(), "Произошло обновление в вопросе");
         }
+        return new UpdateInfo(false, question.lastActivityDate(), "Обновлений нет");
 
+    }
+
+    @Override
+    public Long getQuestionId(String url) {
+        try {
+            var uri = new URI(url);
+            String[] pathParts = uri.getPath().split("/");
+            return Long.parseLong(pathParts[pathParts.length - 2]);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Link url is invalid (Could not parse to URI)" + url, e);
+        }
     }
 }
