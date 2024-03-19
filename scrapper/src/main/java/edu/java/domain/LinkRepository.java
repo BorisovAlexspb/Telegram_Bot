@@ -3,7 +3,6 @@ package edu.java.domain;
 import edu.java.model.Link;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public interface LinkRepository {
 
@@ -11,7 +10,7 @@ public interface LinkRepository {
 
     Integer deleteLink(String url);
 
-    Optional<Link> findLink(String url);
+    Link findLink(String url);
 
     List<Link> findAll();
 

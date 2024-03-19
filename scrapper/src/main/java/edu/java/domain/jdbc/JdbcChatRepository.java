@@ -2,7 +2,6 @@ package edu.java.domain.jdbc;
 
 import edu.java.domain.ChatRepository;
 import edu.java.model.Chat;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -28,12 +27,12 @@ public class JdbcChatRepository implements ChatRepository {
             .update();
     }
 
-    @Override
-    public List<Chat> findAll() {
-        return jdbcClient.sql("SELECT * FROM chat")
-            .query(Chat.class)
-            .list();
-    }
+//    @Override
+//    public List<Chat> findAll() {
+//        return jdbcClient.sql("SELECT * FROM chat")
+//            .query(Chat.class)
+//            .list();
+//    }
 
     @Override
     public Optional<Chat> find(Long chatId) {
