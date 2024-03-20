@@ -41,7 +41,7 @@ public class JdbcLinkUpdater implements LinkUpdater {
                 updateInfo = githubClient.checkForUpdate(link);
             } else if (checkTypeOfLink(link.getUrl()).equals(STACK_OVER_FLOW_LINK)) {
 //                lastUpdatedAt = stackOverflowClient.checkForUpdate(link);
-                Question question = questionRepository.findByLinkId(link.getId().longValue()).get();
+                Question question = questionRepository.findByLinkId(link.getId().longValue());
                 updateInfo = stackOverflowClient.checkForUpdate(link, question.getAnswerCount());
             }
 

@@ -14,5 +14,6 @@ public class Link {
     private Integer id;
     private String url;
     private OffsetDateTime updatedAt;
+    private OffsetDateTime checkedAt;
     private OffsetDateTime createdAt;
 }

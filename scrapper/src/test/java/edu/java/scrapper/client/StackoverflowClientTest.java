@@ -38,7 +38,7 @@ public class StackoverflowClientTest {
 
         QuestionsResponse response = client.getLastModificationTime(123);
 
-        assertThat(response.items()).singleElement().isEqualTo(new QuestionResponse(expected));
+        assertThat(response.items()).singleElement().isEqualTo(new QuestionResponse(expected,1));
         wireMockServer.stop();
     }
 }

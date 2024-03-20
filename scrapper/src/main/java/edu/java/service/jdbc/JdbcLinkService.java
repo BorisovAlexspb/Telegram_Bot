@@ -11,7 +11,6 @@ import edu.java.model.Link;
 import edu.java.service.LinkService;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,14 +26,15 @@ public class JdbcLinkService implements LinkService {
     @Override
     @Transactional
     public LinkResponse add(long chatId, AddLinkRequest addLinkRequest) {
-        Optional<Link> link = linkRepository.findLink(addLinkRequest.link().toString());
-        if (link.isPresent() && chatLinkRepository.isLinkPresentInChat(link.get(), chatId)) {
+        Link link = linkRepository.findLink(addLinkRequest.link().toString());
+        if (link != null && chatLinkRepository.isLinkPresentInChat(link, chatId)) {
             throw new LinkAlreadyTrackedException("link is already tracked");
         }
         Link linkToSave = new Link(
             null,
             addLinkRequest.link().toString(),
-            OffsetDateTime.now(),
+            null,
+            null,
             OffsetDateTime.now()
         );
 
@@ -47,16 +47,16 @@ public class JdbcLinkService implements LinkService {
     @Override
     @Transactional
     public LinkResponse remove(long chatId, RemoveLinkRequest removeLinkRequest) {
-        Optional<Link> link = linkRepository.findLink(removeLinkRequest.uri().toString());
-        if (link.isEmpty() || !chatLinkRepository.isLinkPresentInChat(link.get(), chatId)) {
+        Link link = linkRepository.findLink(removeLinkRequest.uri().toString());
+        if (link == null || !chatLinkRepository.isLinkPresentInChat(link, chatId)) {
             throw new LinkAlreadyTrackedException("Can not remove cause i did not track this link");
         }
 
-        chatLinkRepository.remove(chatId, link.get());
-        if (!chatLinkRepository.isLinkPresent(link.get())) {
-            linkRepository.deleteLink(link.get().getUrl());
+        chatLinkRepository.remove(chatId, link);
+        if (!chatLinkRepository.isLinkPresent(link)) {
+            linkRepository.deleteLink(link.getUrl());
         }
-        return new LinkResponse(link.get().getId().longValue(), link.get().getUrl());
+        return new LinkResponse(link.getId().longValue(), link.getUrl());
     }
 
     @Override

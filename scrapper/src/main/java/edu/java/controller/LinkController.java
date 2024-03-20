@@ -4,9 +4,7 @@ import edu.java.dto.bot.AddLinkRequest;
 import edu.java.dto.bot.LinkResponse;
 import edu.java.dto.bot.ListLinksResponse;
 import edu.java.dto.bot.RemoveLinkRequest;
-import java.util.List;
 import edu.java.service.LinkService;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +18,7 @@ public class LinkController {
 
     private LinkService linkService;
 
-    public LinkController (@Qualifier("jdbcLinkService") LinkService linkService){
+    public LinkController(@Qualifier("jdbcLinkService") LinkService linkService) {
         this.linkService = linkService;
     }
 

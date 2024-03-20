@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
@@ -20,8 +19,8 @@ public class JdbcLinkRepository implements LinkRepository {
 
     @Override
     public Integer addLink(Link link) {
-        return jdbcClient.sql("INSERT INTO link(URL, Last_updated, Created_at) VALUES (?, ?, ?) RETURNING ID")
-            .params(link.getUrl(), link.getUpdatedAt(), link.getCreatedAt())
+        return jdbcClient.sql("INSERT INTO link(URL) VALUES (?) RETURNING ID")
+            .param(link.getUrl())
             .query(Integer.class)
             .single();
     }
@@ -34,11 +33,11 @@ public class JdbcLinkRepository implements LinkRepository {
     }
 
     @Override
-    public Optional<Link> findLink(String url) {
+    public Link findLink(String url) {
         return jdbcClient.sql("SELECT * FROM link WHERE URL = ? ")
             .param(url)
             .query(Link.class)
-            .optional();
+            .single();
     }
 
     @Override
@@ -50,7 +49,7 @@ public class JdbcLinkRepository implements LinkRepository {
 
     @Override
     public void updateLastUpdateAndCheckTime(String url, OffsetDateTime lastUpdatedAt, OffsetDateTime checkedAt) {
-        jdbcClient.sql("UPDATE scrapper_schema.link SET Last_updated = ?, Checked_at = ? WHERE url = ?")
+        jdbcClient.sql("UPDATE link SET Last_updated = ?, Checked_at = ? WHERE url = ?")
             .params(lastUpdatedAt, checkedAt, url);
     }
 

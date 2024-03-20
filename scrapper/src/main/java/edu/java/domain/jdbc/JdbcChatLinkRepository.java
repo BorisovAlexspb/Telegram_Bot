@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class JdbcChatLinkRepository implements ChatLinkRepository {
 
-    private JdbcClient jdbcClient;
+    private final JdbcClient jdbcClient;
 
     @Override
     public Optional<ChatLink> find(Integer linkId, Long chatId) {
@@ -52,9 +52,9 @@ public class JdbcChatLinkRepository implements ChatLinkRepository {
                    l.Checked_at,
                    l.Last_updated,
                    l.Created_at
-                FROM scrapper_schema.link l
+                FROM link l
                 JOIN
-                    scrapper_schema.chat_link cl ON l.Id = cl.Link_id
+                    chat_link cl ON l.Id = cl.Link_id
                 WHERE cl.Chat_id = ?
                 """)
             .param(chatId)
@@ -83,17 +83,9 @@ public class JdbcChatLinkRepository implements ChatLinkRepository {
     @Override
     public List<Long> findAllChatIdsByLinkId(Long linkId) {
         return jdbcClient.sql("""
-                SELECT
-                    l.ID,
-                    l.URL,
-                    l.Checked_at,
-                    l.Last_updated,
-                    l.Created_at
-                FROM scrapper_schema.link l
-                JOIN
-                    scrapper_schema.chat_link cl ON l.ID = cl.Link_id
-                WHERE cl.Chat_id = ?
-                """
+        SELECT chat_id FROM .chat_link
+        WHERE Link_id = ?
+        """
             )
             .param(linkId)
             .query(Long.class)

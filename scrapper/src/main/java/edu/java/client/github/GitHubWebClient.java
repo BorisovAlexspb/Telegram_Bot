@@ -70,16 +70,14 @@ public class GitHubWebClient implements GitHubClient {
                     return new UpdateInfo(
                         true,
                         lastEvent.createdAt(),
-                        null
-//                        lastEvent.type().generateUpdateMessage(lastEvent.payload())
+                        lastEvent.type().generateUpdateMessage(lastEvent.payload())
                     );
                 }
 
                 return new UpdateInfo(
                     true,
                     response.pushedAt(),
-                    null
-//                    UNKNOWN.generateUpdateMessage(null)
+                    UNKNOWN.generateUpdateMessage(null)
                 );
             }
 
@@ -88,7 +86,7 @@ public class GitHubWebClient implements GitHubClient {
             return new UpdateInfo(
                 isNewUpdate,
                 response.updatedAt(),
-                isNewUpdate ? null : "Обновлений нет"
+                isNewUpdate ?  UNKNOWN.generateUpdateMessage(null) : "Обновлений нет"
             );
 
         } catch (URISyntaxException e) {

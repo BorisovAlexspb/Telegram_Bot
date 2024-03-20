@@ -1,6 +1,0 @@
-CREATE TABLE IF NOT EXISTS questions(
-    ID BIGSERIAL PRIMARY KEY,
-    Answer_count INT,
-    Link_id BIGINT,
-    FOREIGN KEY (Link_id) REFERENCES link(ID) ON DELETE CASCADE
-);
