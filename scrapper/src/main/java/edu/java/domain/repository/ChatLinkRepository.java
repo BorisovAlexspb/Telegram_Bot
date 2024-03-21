@@ -1,19 +1,14 @@
-package edu.java.domain;
+package edu.java.domain.repository;
 
-import edu.java.model.ChatLink;
 import edu.java.model.Link;
 import java.util.List;
-import java.util.Optional;
 
 public interface ChatLinkRepository {
 
-    Optional<ChatLink> find(Integer linkId, Long chatId);
+    void remove(Long chatId, Link link);
 
-    Integer remove(Long chatId, Link link);
+    void add(Integer linkId, Long chatId);
 
-    Integer add(Integer linkId, Long chatId);
-
-    List<ChatLink> findAll();
 
     List<Link> findLinksByChat(long chatId);
 

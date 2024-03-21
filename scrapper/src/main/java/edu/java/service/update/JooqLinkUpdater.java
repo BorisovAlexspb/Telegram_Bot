@@ -3,9 +3,9 @@ package edu.java.service.update;
 import edu.java.client.github.GitHubClient;
 import edu.java.client.scrapper.BotClient;
 import edu.java.client.stackoverflow.StackOverflowClient;
-import edu.java.domain.repository.jdbc.JdbcChatLinkRepository;
-import edu.java.domain.repository.jdbc.JdbcLinkRepository;
-import edu.java.domain.repository.jdbc.JdbcQuestionRepository;
+import edu.java.domain.repository.jooq.JooqChatLinkRepository;
+import edu.java.domain.repository.jooq.JooqLinkRepository;
+import edu.java.domain.repository.jooq.JooqQuestionRepository;
 import edu.java.dto.bot.LinkUpdateRequest;
 import edu.java.dto.entity.LinkType;
 import edu.java.dto.entity.Question;
@@ -21,11 +21,12 @@ import static edu.java.dto.entity.LinkType.STACKOVERFLOW_QUESTION;
 
 @Service
 @RequiredArgsConstructor
-public class JdbcLinkUpdater implements LinkUpdater {
+public class JooqLinkUpdater implements LinkUpdater {
     private static final Duration THRESHOLD = Duration.ofDays(1L);
-    private final JdbcChatLinkRepository chatLinkRepository;
-    private final JdbcLinkRepository linkRepository;
-    private final JdbcQuestionRepository questionRepository;
+
+    private final JooqChatLinkRepository chatLinkRepository;
+    private final JooqLinkRepository linkRepository;
+    private final JooqQuestionRepository questionRepository;
     private final StackOverflowClient stackOverflowClient;
     private final GitHubClient githubClient;
     private final BotClient botClient;
@@ -62,3 +63,4 @@ public class JdbcLinkUpdater implements LinkUpdater {
     }
 
 }
+

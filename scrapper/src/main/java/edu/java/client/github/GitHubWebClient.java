@@ -1,6 +1,6 @@
 package edu.java.client.github;
 
-import edu.java.dto.UpdateInfo;
+import edu.java.dto.entity.UpdateInfo;
 import edu.java.dto.github.EventResponse;
 import edu.java.dto.github.RepositoryResponse;
 import edu.java.model.Link;

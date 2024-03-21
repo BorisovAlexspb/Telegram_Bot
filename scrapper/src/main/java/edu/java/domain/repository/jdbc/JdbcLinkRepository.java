@@ -1,6 +1,6 @@
-package edu.java.domain.jdbc;
+package edu.java.domain.repository.jdbc;
 
-import edu.java.domain.LinkRepository;
+import edu.java.domain.repository.LinkRepository;
 import edu.java.model.Link;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -18,16 +18,14 @@ public class JdbcLinkRepository implements LinkRepository {
     private final JdbcClient jdbcClient;
 
     @Override
-    public Integer addLink(Link link) {
-        return jdbcClient.sql("INSERT INTO link(URL) VALUES (?) RETURNING ID")
-            .param(link.getUrl())
-            .query(Integer.class)
-            .single();
+    public void addLink(Link link) {
+        jdbcClient.sql("INSERT INTO link(URL) VALUES (?) RETURNING ID")
+            .param(link.getUrl());
     }
 
     @Override
-    public Integer deleteLink(String url) {
-        return jdbcClient.sql("DELETE FROM link WHERE URL = ?")
+    public void deleteLink(String url) {
+        jdbcClient.sql("DELETE FROM link WHERE URL = ?")
             .param(url)
             .update();
     }
@@ -53,6 +51,7 @@ public class JdbcLinkRepository implements LinkRepository {
             .params(lastUpdatedAt, checkedAt, url);
     }
 
+    @Override
     public List<Link> findOutdatedLinks(Duration threshold) {
         LocalDateTime thresholdDateTime = LocalDateTime.now().minus(threshold);
         OffsetDateTime thresholdOffsetDateTime = thresholdDateTime.atOffset(ZoneOffset.UTC);

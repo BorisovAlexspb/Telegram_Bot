@@ -1,6 +1,6 @@
-package edu.java.service.jdbc;
+package edu.java.service.jooq;
 
-import edu.java.domain.repository.jdbc.JdbcChatRepository;
+import edu.java.domain.repository.jooq.JooqChatRepository;
 import edu.java.exception.ChatAlreadyRegisteredException;
 import edu.java.exception.ChatNotFoundException;
 import edu.java.service.ChatService;
@@ -8,11 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+// тот же код что и в Jdbc сервисах
 @Service
 @RequiredArgsConstructor
-public class JdbcChatService implements ChatService {
+public class JooqChatService implements ChatService {
 
-    private final JdbcChatRepository chatRepository;
+    private final JooqChatRepository chatRepository;
 
     @Override
     @Transactional
@@ -33,3 +35,4 @@ public class JdbcChatService implements ChatService {
     }
 
 }
+

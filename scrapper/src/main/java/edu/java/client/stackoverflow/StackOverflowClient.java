@@ -1,6 +1,6 @@
 package edu.java.client.stackoverflow;
 
-import edu.java.dto.UpdateInfo;
+import edu.java.dto.entity.UpdateInfo;
 import edu.java.dto.stackoverflow.QuestionsResponse;
 import edu.java.model.Link;
 import jakarta.validation.constraints.NotNull;

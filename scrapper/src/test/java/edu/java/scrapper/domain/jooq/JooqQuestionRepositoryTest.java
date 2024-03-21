@@ -1,38 +1,43 @@
-package edu.java.scrapper.domain;
+package edu.java.scrapper.domain.jooq;
 
-import edu.java.domain.jdbc.JdbcLinkRepository;
-import edu.java.domain.jdbc.JdbcQuestionRepository;
-import edu.java.dto.Question;
+import edu.java.domain.repository.jooq.JooqLinkRepository;
+import edu.java.domain.repository.jooq.JooqQuestionRepository;
+import edu.java.dto.entity.Question;
 import edu.java.model.Link;
 import edu.java.scrapper.IntegrationTest;
-import java.util.List;
+import org.jooq.DSLContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static edu.java.domain.jooq.Tables.QUESTIONS;
 import static org.assertj.core.api.Assertions.assertThat;
 
+;
+
 @SpringBootTest
-public class JdbcQuestionRepositoryTest extends IntegrationTest {
+public class JooqQuestionRepositoryTest extends IntegrationTest {
 
     @Autowired
-    private JdbcLinkRepository linkRepository;
+    private JooqLinkRepository linkRepository;
 
     @Autowired
-    private JdbcQuestionRepository questionRepository;
+    private JooqQuestionRepository questionRepository;
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private DSLContext dslContext;
 
     @Test
     @Transactional
     @Rollback
     void saveQuestion() {
         Link link = new Link(
-            1, "github.com/dummy/dummy_repo",
-            null, null, null
+                1, "github.com/dummy/dummy_repo",
+                null, null, null
         );
 
         linkRepository.addLink(link);
@@ -53,8 +58,8 @@ public class JdbcQuestionRepositoryTest extends IntegrationTest {
     @Rollback
     void findByLinkId() {
         Link link = new Link(
-            1, "github.com/dummy/dummy_repo",
-            null, null, null
+                1, "github.com/dummy/dummy_repo",
+                null, null, null
         );
 
         linkRepository.addLink(link);
@@ -71,13 +76,9 @@ public class JdbcQuestionRepositoryTest extends IntegrationTest {
     }
 
     private List<Question> getQuestion() {
-        return jdbcTemplate.query(
-            "SELECT * FROM question",
-            (rs, rowNum) -> new Question(
-                rs.getLong("ID"),
-                rs.getInt("Answer_count"),
-                rs.getLong("Link_id")
-            )
-        );
+        return dslContext.select(QUESTIONS.fields())
+                .from(QUESTIONS)
+                .fetchInto(Question.class);
     }
 }
+

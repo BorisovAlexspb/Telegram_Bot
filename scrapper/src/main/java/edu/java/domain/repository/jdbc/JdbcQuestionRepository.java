@@ -1,7 +1,7 @@
-package edu.java.domain.jdbc;
+package edu.java.domain.repository.jdbc;
 
-import edu.java.domain.QuestionRepository;
-import edu.java.dto.Question;
+import edu.java.domain.repository.QuestionRepository;
+import edu.java.dto.entity.Question;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;

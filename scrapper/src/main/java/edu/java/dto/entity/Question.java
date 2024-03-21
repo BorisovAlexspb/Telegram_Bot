@@ -1,4 +1,4 @@
-package edu.java.dto;
+package edu.java.dto.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
