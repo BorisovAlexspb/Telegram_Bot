@@ -41,7 +41,7 @@ public class ScrapperController {
         @RequestBody AddLinkRequest link
     ) {
         log.info("Added link " + link + "to chat id " + id);
-        return new LinkResponse(Long.parseLong(id), link.link());
+        return new LinkResponse(Long.parseLong(id), link.link().toString());
     }
 
     @DeleteMapping("/links")
@@ -50,7 +50,7 @@ public class ScrapperController {
         @RequestBody RemoveLinkRequest link
     ) {
         log.info("Removed link " + link + " from chat " + id);
-        return new LinkResponse(Long.parseLong(id), link.uri().normalize());
+        return new LinkResponse(Long.parseLong(id), link.uri().toString());
     }
 }
 
