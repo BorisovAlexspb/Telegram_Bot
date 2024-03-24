@@ -1,13 +1,13 @@
 package edu.java.domain.jdbc;
 
 import edu.java.domain.LinkRepository;
+import edu.java.domain.repository.LinkRepository;
 import edu.java.model.Link;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
@@ -52,6 +52,7 @@ public class JdbcLinkRepository implements LinkRepository {
             .params(lastUpdatedAt, checkedAt, url);
     }
 
+    @Override
     public List<Link> findOutdatedLinks(Duration threshold) {
         LocalDateTime thresholdDateTime = LocalDateTime.now().minus(threshold);
         OffsetDateTime thresholdOffsetDateTime = thresholdDateTime.atOffset(ZoneOffset.UTC);

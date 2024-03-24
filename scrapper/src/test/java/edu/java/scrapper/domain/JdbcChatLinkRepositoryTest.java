@@ -1,13 +1,14 @@
-package edu.java.scrapper.domain;
+package edu.java.scrapper.domain.jooq;
 
-import edu.java.domain.jdbc.JdbcChatLinkRepository;
-import edu.java.domain.jdbc.JdbcChatRepository;
+import edu.java.domain.jooq.Tables;
+import edu.java.domain.repository.jooq.JooqChatLinkRepository;
+import edu.java.domain.repository.jooq.JooqChatRepository;
 import edu.java.model.Chat;
 import edu.java.model.ChatLink;
 import edu.java.model.Link;
 import edu.java.scrapper.IntegrationTest;
-import java.util.List;
-import org.junit.Test;
+import org.jooq.DSLContext;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -32,13 +33,13 @@ public class JooqChatLinkRepositoryTest extends IntegrationTest {
     private DSLContext dslContext;
 
     private static final Link LINK = new Link(
-        1, "github.com/dummy/dummy_repo",
-        null, null,null
+            1, "github.com/dummy/dummy_repo",
+            null, null, null
     );
 
     private static final Link SECOND_LINK = new Link(
-        2, "github.com/dummy/dummy2_repo",
-        null, null,null
+            2, "github.com/dummy/dummy2_repo",
+            null, null, null
     );
 
     private static final Chat CHAT = new Chat(255L);

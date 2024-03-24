@@ -26,6 +26,7 @@ import static edu.java.dto.entity.LinkType.STACKOVERFLOW_QUESTION;
 public class JdbcLinkService implements LinkService {
 
     private final JdbcLinkRepository linkRepository;
+
     private final JdbcChatLinkRepository chatLinkRepository;
     private final JdbcQuestionRepository questionRepository;
     private final StackOverflowClient stackOverflowWebClient;

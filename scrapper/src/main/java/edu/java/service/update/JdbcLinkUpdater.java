@@ -61,4 +61,14 @@ public class JdbcLinkUpdater implements LinkUpdater {
         return updatedCount;
     }
 
+    @Override
+    public String checkTypeOfLink(String url) {
+        if (url.startsWith(GIT_HUB_LINK)) {
+            return GIT_HUB_LINK;
+        }
+        if (url.startsWith(STACK_OVER_FLOW_LINK)) {
+            return STACK_OVER_FLOW_LINK;
+        }
+        return "unknown";
+    }
 }

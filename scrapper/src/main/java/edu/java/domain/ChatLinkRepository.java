@@ -1,4 +1,4 @@
-package edu.java.domain.repository;
+package edu.java.domain;
 
 import edu.java.model.Link;
 import java.util.List;
