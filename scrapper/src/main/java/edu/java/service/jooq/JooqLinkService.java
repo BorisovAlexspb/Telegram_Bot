@@ -1,9 +1,9 @@
-package edu.java.service.jdbc;
+package edu.java.service.jooq;
 
 import edu.java.client.stackoverflow.StackOverflowClient;
-import edu.java.domain.repository.jdbc.JdbcChatLinkRepository;
-import edu.java.domain.repository.jdbc.JdbcLinkRepository;
-import edu.java.domain.repository.jdbc.JdbcQuestionRepository;
+import edu.java.domain.repository.jooq.JooqChatLinkRepository;
+import edu.java.domain.repository.jooq.JooqLinkRepository;
+import edu.java.domain.repository.jooq.JooqQuestionRepository;
 import edu.java.dto.bot.AddLinkRequest;
 import edu.java.dto.bot.LinkResponse;
 import edu.java.dto.bot.ListLinksResponse;
@@ -20,14 +20,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import static edu.java.dto.entity.LinkType.STACKOVERFLOW_QUESTION;
 
+// тот же код что и в Jdbc сервисе
 @SuppressWarnings("LineLength")
 @Service
 @RequiredArgsConstructor
-public class JdbcLinkService implements LinkService {
+public class JooqLinkService implements LinkService {
 
-    private final JdbcLinkRepository linkRepository;
-    private final JdbcChatLinkRepository chatLinkRepository;
-    private final JdbcQuestionRepository questionRepository;
+    private final JooqLinkRepository linkRepository;
+    private final JooqChatLinkRepository chatLinkRepository;
+    private final JooqQuestionRepository questionRepository;
     private final StackOverflowClient stackOverflowWebClient;
 
     @Override

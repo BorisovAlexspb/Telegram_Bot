@@ -1,4 +1,4 @@
-package edu.java.domain;
+package edu.java.domain.repository;
 
 import edu.java.model.Link;
 import java.time.Duration;
