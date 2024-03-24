@@ -1,6 +1,5 @@
 package edu.java.dto.entity.jpa;
 
-import edu.java.dto.entity.jpa.ChatLink;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import java.time.OffsetDateTime;

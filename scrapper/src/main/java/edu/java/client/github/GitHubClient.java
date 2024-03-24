@@ -1,9 +1,9 @@
 package edu.java.client.github;
 
+import edu.java.dto.entity.jdbc.Link;
 import edu.java.dto.entity.jdbc.UpdateInfo;
 import edu.java.dto.github.EventResponse;
 import edu.java.dto.github.RepositoryResponse;
-import edu.java.dto.entity.jdbc.Link;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 

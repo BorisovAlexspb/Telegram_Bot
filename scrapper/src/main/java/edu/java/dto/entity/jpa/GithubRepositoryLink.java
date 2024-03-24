@@ -1,6 +1,5 @@
 package edu.java.dto.entity.jpa;
 
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import java.time.OffsetDateTime;
 import java.util.List;

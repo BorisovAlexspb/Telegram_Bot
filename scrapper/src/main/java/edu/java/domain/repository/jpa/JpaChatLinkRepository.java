@@ -1,9 +1,9 @@
 package edu.java.domain.repository.jpa;
 
+import edu.java.dto.entity.jpa.ChatLink;
 import edu.java.dto.entity.jpa.Link;
 import java.util.List;
 import java.util.Optional;
-import edu.java.dto.entity.jpa.ChatLink;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
