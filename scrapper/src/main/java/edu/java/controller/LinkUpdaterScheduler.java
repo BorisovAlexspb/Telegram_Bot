@@ -1,12 +1,12 @@
 package edu.java.controller;
 
 import edu.java.service.update.LinkUpdater;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-@AllArgsConstructor
 @EnableScheduling
+@RequiredArgsConstructor
 public class LinkUpdaterScheduler {
     private final LinkUpdater linkUpdater;
 

@@ -5,9 +5,10 @@ import java.util.List;
 
 public interface ChatLinkRepository {
 
-    Integer remove(Long chatId, Link link);
+    void remove(Long chatId, Link link);
 
-    Integer add(Integer linkId, Long chatId);
+    void add(Integer linkId, Long chatId);
+
 
     List<Link> findLinksByChat(long chatId);
 

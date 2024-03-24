@@ -1,49 +1,53 @@
-package edu.java.scrapper.domain;
+package edu.java.scrapper.domain.jooq;
 
-import edu.java.domain.jdbc.JdbcChatRepository;
+import edu.java.domain.repository.jooq.JooqChatRepository;
 import edu.java.model.Chat;
 import edu.java.scrapper.IntegrationTest;
-import java.util.List;
-import java.util.Optional;
+import org.jooq.DSLContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+import static edu.java.domain.jooq.tables.Chat.CHAT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-public class JdbcChatRepositoryTest extends IntegrationTest {
+public class JooqChatRepositoryTest extends IntegrationTest {
 
-    private static final Chat CHAT = new Chat(255L);
-
-    @Autowired
-    private JdbcChatRepository chatRepository;
+    private static final Chat TEST_CHAT = new Chat(255L);
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private JooqChatRepository chatRepository;
+
+    @Autowired
+    private DSLContext dslContext;
 
     @Test
     @Transactional
     @Rollback
     void saveChatTest() {
-        chatRepository.add(CHAT.getId());
+        chatRepository.add(TEST_CHAT.getId());
 
         var chats = getChats();
 
         assertThat(chats).isNotEmpty();
         assertThat(chats).hasSize(1);
-        assertThat(chats.getFirst().getId()).isEqualTo(CHAT.getId());
+        assertThat(chats.getFirst().getId()).isEqualTo(TEST_CHAT.getId());
     }
 
     @Test
     @Transactional
     @Rollback
     void deleteChat() {
-        chatRepository.add(CHAT.getId());
+        chatRepository.add(TEST_CHAT.getId());
 
-        chatRepository.remove(CHAT.getId());
+        chatRepository.remove(TEST_CHAT.getId());
 
         var chats = getChats();
 
@@ -57,16 +61,15 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
         var chat = chatRepository.find(CHAT.getId());
         assertThat(chat).isEqualTo(Optional.empty());
 
-        chatRepository.add(CHAT.getId());
+        chatRepository.add(TEST_CHAT.getId());
 
-        chat = chatRepository.find(CHAT.getId());
+        chat = chatRepository.find(TEST_CHAT.getId());
         assertThat(chat).isNotNull();
     }
 
     private List<Chat> getChats() {
-        return jdbcTemplate.query(
-            "SELECT ID FROM chat",
-            (rs, rowNum) -> new Chat(rs.getLong("ID"))
-        );
+        return dslContext.select(CHAT.fields())
+                .from(CHAT)
+                .fetchInto(Chat.class);
     }
 }

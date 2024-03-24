@@ -1,38 +1,45 @@
-package edu.java.scrapper.domain;
+package edu.java.scrapper.domain.jooq;
 
-import edu.java.domain.jdbc.JdbcChatLinkRepository;
-import edu.java.domain.jdbc.JdbcChatRepository;
+import edu.java.domain.jooq.Tables;
+import edu.java.domain.repository.jooq.JooqChatLinkRepository;
+import edu.java.domain.repository.jooq.JooqChatRepository;
 import edu.java.model.Chat;
 import edu.java.model.ChatLink;
 import edu.java.model.Link;
 import edu.java.scrapper.IntegrationTest;
-import java.util.List;
+import org.jooq.DSLContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static edu.java.domain.jooq.Tables.CHAT_LINK;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-public class JdbcChatLinkRepositoryTest extends IntegrationTest {
+public class JooqChatLinkRepositoryTest extends IntegrationTest {
 
     @Autowired
-    private JdbcChatLinkRepository chatLinkRepository;
+    private JooqChatLinkRepository chatLinkRepository;
+
     @Autowired
-    private JdbcChatRepository chatRepository;
+    private JooqChatRepository chatRepository;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private DSLContext dslContext;
 
     private static final Link LINK = new Link(
-        1, "github.com/dummy/dummy_repo",
-        null, null,null
+            1, "github.com/dummy/dummy_repo",
+            null, null, null
     );
 
     private static final Link SECOND_LINK = new Link(
-        2, "github.com/dummy/dummy2_repo",
-        null, null,null
+            2, "github.com/dummy/dummy2_repo",
+            null, null, null
     );
 
     private static final Chat CHAT = new Chat(255L);
@@ -149,20 +156,15 @@ public class JdbcChatLinkRepositoryTest extends IntegrationTest {
     }
 
     private void saveLinkWithId(Link link) {
-        jdbcTemplate.update("""
-                INSERT INTO link
-                    (ID, URL)
-                    VALUES (?, ?)
-            """, link.getId(), link.getUrl());
+        dslContext.insertInto(Tables.LINK)
+                .set(Tables.LINK.ID, link.getId().longValue())
+                .set(Tables.LINK.URL, link.getUrl())
+                .execute();
     }
 
     private List<ChatLink> getChatLinks() {
-        return jdbcTemplate.query(
-            "SELECT Chat_id, Link_id FROM chat_link",
-            (rs, rowNum) -> new ChatLink(
-                rs.getInt("Link_id"),
-                rs.getLong("Chat_id")
-            )
-        );
+        return dslContext.select(CHAT_LINK.fields())
+                .from(CHAT_LINK)
+                .fetchInto(ChatLink.class);
     }
 }

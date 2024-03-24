@@ -1,11 +1,15 @@
 package edu.java.service.jdbc;
 
-import edu.java.domain.jdbc.JdbcChatLinkRepository;
-import edu.java.domain.jdbc.JdbcLinkRepository;
+import edu.java.client.stackoverflow.StackOverflowClient;
+import edu.java.domain.repository.jdbc.JdbcChatLinkRepository;
+import edu.java.domain.repository.jdbc.JdbcLinkRepository;
+import edu.java.domain.repository.jdbc.JdbcQuestionRepository;
 import edu.java.dto.bot.AddLinkRequest;
 import edu.java.dto.bot.LinkResponse;
 import edu.java.dto.bot.ListLinksResponse;
 import edu.java.dto.bot.RemoveLinkRequest;
+import edu.java.dto.entity.LinkType;
+import edu.java.dto.entity.Question;
 import edu.java.exception.LinkAlreadyTrackedException;
 import edu.java.model.Link;
 import edu.java.service.LinkService;
@@ -14,7 +18,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import static edu.java.dto.entity.LinkType.STACKOVERFLOW_QUESTION;
 
+@SuppressWarnings("LineLength")
 @Service
 @RequiredArgsConstructor
 public class JdbcLinkService implements LinkService {
@@ -22,6 +28,8 @@ public class JdbcLinkService implements LinkService {
     private final JdbcLinkRepository linkRepository;
 
     private final JdbcChatLinkRepository chatLinkRepository;
+    private final JdbcQuestionRepository questionRepository;
+    private final StackOverflowClient stackOverflowWebClient;
 
     @Override
     @Transactional
@@ -30,15 +38,25 @@ public class JdbcLinkService implements LinkService {
         if (link != null && chatLinkRepository.isLinkPresentInChat(link, chatId)) {
             throw new LinkAlreadyTrackedException("link is already tracked");
         }
+
         Link linkToSave = new Link(
-            null,
-            addLinkRequest.link().toString(),
-            null,
-            null,
-            OffsetDateTime.now()
+                null,
+                addLinkRequest.link().toString(),
+                null,
+                null,
+                OffsetDateTime.now()
         );
 
-        linkRepository.addLink(linkToSave);
+        if (link == null) {
+            linkRepository.addLink(linkToSave);
+            if (LinkType.getTypeOfLink(linkToSave.getUrl()) == STACKOVERFLOW_QUESTION) {
+                var question = stackOverflowWebClient
+                        .getLastModificationTime(stackOverflowWebClient.getQuestionId(linkToSave.getUrl()))
+                        .items()
+                        .getFirst();
+                questionRepository.saveQuestion(new Question(null, question.answerCount(), linkToSave.getId().longValue()));
+            }
+        }
 
         chatLinkRepository.add(linkToSave.getId(), chatId);
         return new LinkResponse(linkToSave.getId().longValue(), linkToSave.getUrl());
@@ -49,7 +67,7 @@ public class JdbcLinkService implements LinkService {
     public LinkResponse remove(long chatId, RemoveLinkRequest removeLinkRequest) {
         Link link = linkRepository.findLink(removeLinkRequest.uri().toString());
         if (link == null || !chatLinkRepository.isLinkPresentInChat(link, chatId)) {
-            throw new LinkAlreadyTrackedException("Can not remove cause i did not track this link");
+            throw new LinkAlreadyTrackedException("Can not remove cause I did not track this link");
         }
 
         chatLinkRepository.remove(chatId, link);
@@ -63,9 +81,9 @@ public class JdbcLinkService implements LinkService {
     @Transactional
     public ListLinksResponse listAll(long chatId) {
         List<LinkResponse> links = chatLinkRepository.findLinksByChat(chatId)
-            .stream()
-            .map(link -> new LinkResponse(link.getId().longValue(), link.getUrl()))
-            .toList();
+                .stream()
+                .map(link -> new LinkResponse(link.getId().longValue(), link.getUrl()))
+                .toList();
         return new ListLinksResponse(links, links.size());
     }
 }

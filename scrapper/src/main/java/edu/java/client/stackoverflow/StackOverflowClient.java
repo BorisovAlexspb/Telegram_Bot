@@ -8,5 +8,7 @@ import java.time.OffsetDateTime;
 public interface StackOverflowClient {
     QuestionsResponse getLastModificationTime(@NotNull long questionId);
 
-    OffsetDateTime checkForUpdate(Link link);
+    UpdateInfo checkForUpdate(Link link, int answerCount);
+
+    Long getQuestionId(String url);
 }
