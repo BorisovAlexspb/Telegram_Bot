@@ -1,7 +1,7 @@
 package edu.java.scrapper.domain.jdbc;
 
 import edu.java.domain.repository.jdbc.JdbcChatRepository;
-import edu.java.model.Chat;
+import edu.java.dto.entity.jdbc.Chat;
 import edu.java.scrapper.IntegrationTest;
 import java.util.List;
 import java.util.Optional;

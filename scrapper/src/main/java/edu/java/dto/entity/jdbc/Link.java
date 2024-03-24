@@ -1,4 +1,4 @@
-package edu.java.model;
+package edu.java.dto.entity.jdbc;
 
 import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;

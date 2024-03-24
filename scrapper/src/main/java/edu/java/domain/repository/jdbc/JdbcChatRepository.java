@@ -1,7 +1,7 @@
 package edu.java.domain.repository.jdbc;
 
 import edu.java.domain.repository.ChatRepository;
-import edu.java.model.Chat;
+import edu.java.dto.entity.jdbc.Chat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;

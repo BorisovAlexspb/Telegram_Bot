@@ -1,7 +1,7 @@
 package edu.java.domain.repository.jooq;
 
 import edu.java.domain.repository.QuestionRepository;
-import edu.java.dto.entity.Question;
+import edu.java.dto.entity.jdbc.Question;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;

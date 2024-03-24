@@ -1,8 +1,8 @@
 package edu.java.domain.repository.jdbc;
 
 import edu.java.domain.repository.ChatLinkRepository;
-import edu.java.model.ChatLink;
-import edu.java.model.Link;
+import edu.java.dto.entity.jdbc.ChatLink;
+import edu.java.dto.entity.jdbc.Link;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.simple.JdbcClient;

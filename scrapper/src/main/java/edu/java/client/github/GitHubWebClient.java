@@ -1,9 +1,9 @@
 package edu.java.client.github;
 
-import edu.java.dto.entity.UpdateInfo;
+import edu.java.dto.entity.jdbc.UpdateInfo;
 import edu.java.dto.github.EventResponse;
 import edu.java.dto.github.RepositoryResponse;
-import edu.java.model.Link;
+import edu.java.dto.entity.jdbc.Link;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -78,7 +78,7 @@ public class GitHubWebClient implements GitHubClient {
             return new UpdateInfo(
                 isNewUpdate,
                 response.updatedAt(),
-                isNewUpdate ?  UNKNOWN.generateUpdateMessage(null) : "Обновлений нет"
+                isNewUpdate ? UNKNOWN.generateUpdateMessage(null) : "Обновлений нет"
             );
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Link url is invalid (Could not parse to URI)" + link.getUrl(), e);

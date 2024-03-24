@@ -1,8 +1,8 @@
 package edu.java.client.stackoverflow;
 
-import edu.java.dto.entity.UpdateInfo;
+import edu.java.dto.entity.jdbc.UpdateInfo;
 import edu.java.dto.stackoverflow.QuestionsResponse;
-import edu.java.model.Link;
+import edu.java.dto.entity.jdbc.Link;
 import java.net.URI;
 import java.net.URISyntaxException;
 import org.springframework.beans.factory.annotation.Value;

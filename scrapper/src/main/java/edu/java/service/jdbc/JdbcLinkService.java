@@ -8,17 +8,17 @@ import edu.java.dto.bot.AddLinkRequest;
 import edu.java.dto.bot.LinkResponse;
 import edu.java.dto.bot.ListLinksResponse;
 import edu.java.dto.bot.RemoveLinkRequest;
-import edu.java.dto.entity.LinkType;
-import edu.java.dto.entity.Question;
+import edu.java.dto.entity.jdbc.LinkType;
+import edu.java.dto.entity.jdbc.Question;
 import edu.java.exception.LinkAlreadyTrackedException;
-import edu.java.model.Link;
+import edu.java.dto.entity.jdbc.Link;
 import edu.java.service.LinkService;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import static edu.java.dto.entity.LinkType.STACKOVERFLOW_QUESTION;
+import static edu.java.dto.entity.jdbc.LinkType.STACKOVERFLOW_QUESTION;
 
 @SuppressWarnings("LineLength")
 @Service

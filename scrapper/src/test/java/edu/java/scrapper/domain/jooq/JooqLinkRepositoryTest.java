@@ -2,7 +2,7 @@ package edu.java.scrapper.domain.jooq;
 
 import edu.java.domain.jooq.Tables;
 import edu.java.domain.repository.jooq.JooqLinkRepository;
-import edu.java.model.Link;
+import edu.java.dto.entity.jdbc.Link;
 import edu.java.scrapper.IntegrationTest;
 import org.jooq.DSLContext;
 import org.junit.jupiter.api.Test;

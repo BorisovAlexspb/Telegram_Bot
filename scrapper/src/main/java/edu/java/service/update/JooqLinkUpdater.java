@@ -7,17 +7,17 @@ import edu.java.domain.repository.jooq.JooqChatLinkRepository;
 import edu.java.domain.repository.jooq.JooqLinkRepository;
 import edu.java.domain.repository.jooq.JooqQuestionRepository;
 import edu.java.dto.bot.LinkUpdateRequest;
-import edu.java.dto.entity.LinkType;
-import edu.java.dto.entity.Question;
-import edu.java.dto.entity.UpdateInfo;
-import edu.java.model.Link;
+import edu.java.dto.entity.jdbc.LinkType;
+import edu.java.dto.entity.jdbc.Question;
+import edu.java.dto.entity.jdbc.UpdateInfo;
+import edu.java.dto.entity.jdbc.Link;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import static edu.java.dto.entity.LinkType.GITHUB_REPO;
-import static edu.java.dto.entity.LinkType.STACKOVERFLOW_QUESTION;
+import static edu.java.dto.entity.jdbc.LinkType.GITHUB_REPO;
+import static edu.java.dto.entity.jdbc.LinkType.STACKOVERFLOW_QUESTION;
 
 @Service
 @RequiredArgsConstructor
