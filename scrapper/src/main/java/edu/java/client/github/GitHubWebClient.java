@@ -50,22 +50,17 @@ public class GitHubWebClient implements GitHubClient {
 
     @Override
     public UpdateInfo checkForUpdate(Link link) {
-
         try {
             URI uri = new URI(link.getUrl());
             String[] pathParts = uri.getPath().split("/");
-
             var owner = pathParts[1];
             var repository = pathParts[2];
-
             RepositoryResponse response = getLastUpdateTime(owner, repository);
-
             if (response.pushedAt().isAfter(link.getUpdatedAt())) {
                 EventResponse lastEvent = fetchEvents(owner, repository)
                     .stream()
                     .max(Comparator.comparing(EventResponse::createdAt))
                     .orElse(null);
-
                 if (lastEvent != null && lastEvent.createdAt().isAfter(link.getUpdatedAt())) {
                     return new UpdateInfo(
                         true,
@@ -73,22 +68,18 @@ public class GitHubWebClient implements GitHubClient {
                         lastEvent.type().generateUpdateMessage(lastEvent.payload())
                     );
                 }
-
                 return new UpdateInfo(
                     true,
                     response.pushedAt(),
                     UNKNOWN.generateUpdateMessage(null)
                 );
             }
-
             var isNewUpdate = response.updatedAt().isAfter(link.getUpdatedAt());
-
             return new UpdateInfo(
                 isNewUpdate,
                 response.updatedAt(),
                 isNewUpdate ?  UNKNOWN.generateUpdateMessage(null) : "Обновлений нет"
             );
-
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Link url is invalid (Could not parse to URI)" + link.getUrl(), e);
         }
