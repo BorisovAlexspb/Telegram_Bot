@@ -1,12 +1,12 @@
 package edu.java.client.github;
 
-import edu.java.dto.entity.jdbc.Link;
 import edu.java.dto.entity.jdbc.UpdateInfo;
 import edu.java.dto.github.EventResponse;
 import edu.java.dto.github.RepositoryResponse;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -49,19 +49,19 @@ public class GitHubWebClient implements GitHubClient {
     }
 
     @Override
-    public UpdateInfo checkForUpdate(Link link) {
+    public UpdateInfo checkForUpdate(String url, OffsetDateTime lastUpdated) {
         try {
-            URI uri = new URI(link.getUrl());
+            URI uri = new URI(url);
             String[] pathParts = uri.getPath().split("/");
             var owner = pathParts[1];
             var repository = pathParts[2];
             RepositoryResponse response = getLastUpdateTime(owner, repository);
-            if (response.pushedAt().isAfter(link.getUpdatedAt())) {
+            if (response.pushedAt().isAfter(lastUpdated)) {
                 EventResponse lastEvent = fetchEvents(owner, repository)
                     .stream()
                     .max(Comparator.comparing(EventResponse::createdAt))
                     .orElse(null);
-                if (lastEvent != null && lastEvent.createdAt().isAfter(link.getUpdatedAt())) {
+                if (lastEvent != null && lastEvent.createdAt().isAfter(lastUpdated)) {
                     return new UpdateInfo(
                         true,
                         lastEvent.createdAt(),
@@ -74,14 +74,14 @@ public class GitHubWebClient implements GitHubClient {
                     UNKNOWN.generateUpdateMessage(null)
                 );
             }
-            var isNewUpdate = response.updatedAt().isAfter(link.getUpdatedAt());
+            var isNewUpdate = response.updatedAt().isAfter(lastUpdated);
             return new UpdateInfo(
                 isNewUpdate,
                 response.updatedAt(),
                 isNewUpdate ? UNKNOWN.generateUpdateMessage(null) : "Обновлений нет"
             );
         } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Link url is invalid (Could not parse to URI)" + link.getUrl(), e);
+            throw new IllegalArgumentException("Link url is invalid (Could not parse to URI)" + url, e);
         }
     }
 

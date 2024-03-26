@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static edu.java.dto.entity.jdbc.LinkType.GITHUB_REPO;
 import static edu.java.dto.entity.jdbc.LinkType.STACKOVERFLOW_QUESTION;
 
+@SuppressWarnings("LineLength")
 @Service
 @RequiredArgsConstructor
 public class JooqLinkUpdater implements LinkUpdater {
@@ -41,19 +42,20 @@ public class JooqLinkUpdater implements LinkUpdater {
             UpdateInfo updateInfo = new UpdateInfo(false, link.getUpdatedAt(), "Обновлений нет");
 
             if (LinkType.getTypeOfLink(link.getUrl()) == GITHUB_REPO) {
-                updateInfo = githubClient.checkForUpdate(link);
+                updateInfo = githubClient.checkForUpdate(link.getUrl(), link.getUpdatedAt());
             } else if (LinkType.getTypeOfLink(link.getUrl()) == STACKOVERFLOW_QUESTION) {
                 Question question = questionRepository.findByLinkId(link.getId().longValue());
-                updateInfo = stackOverflowClient.checkForUpdate(link, question.getAnswerCount());
+                updateInfo =
+                    stackOverflowClient.checkForUpdate(link.getUrl(), link.getUpdatedAt(), question.getAnswerCount());
             }
 
             if (updateInfo.isNewUpdate()) {
                 botClient.sendUpdate(new LinkUpdateRequest(
-                                link.getId().longValue(),
-                                link.getUrl(),
-                                updateInfo.message(),
-                                chatLinkRepository.findAllChatIdsByLinkId(Long.valueOf(link.getId()))
-                        )
+                        link.getId().longValue(),
+                        link.getUrl(),
+                        updateInfo.message(),
+                        chatLinkRepository.findAllChatIdsByLinkId(Long.valueOf(link.getId()))
+                    )
                 );
                 updatedCount++;
             }

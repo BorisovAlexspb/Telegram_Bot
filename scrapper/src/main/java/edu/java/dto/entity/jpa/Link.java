@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
@@ -23,7 +22,7 @@ import org.springframework.data.annotation.CreatedDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = "chatLinks")
-@EqualsAndHashCode(of = "url")
+//@EqualsAndHashCode(of = "url")
 @Entity
 @Table(name = "link")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

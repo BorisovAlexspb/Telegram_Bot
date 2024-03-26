@@ -24,7 +24,7 @@ import lombok.ToString;
 @EqualsAndHashCode(of = "id")
 @Builder
 @Entity
-@Table(name = "chat", schema = "scrapper_schema")
+@Table(name = "chat")
 public class Chat {
 
     @Id

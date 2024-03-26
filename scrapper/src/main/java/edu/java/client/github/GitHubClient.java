@@ -1,10 +1,10 @@
 package edu.java.client.github;
 
-import edu.java.dto.entity.jdbc.Link;
 import edu.java.dto.entity.jdbc.UpdateInfo;
 import edu.java.dto.github.EventResponse;
 import edu.java.dto.github.RepositoryResponse;
 import jakarta.validation.constraints.NotNull;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public interface GitHubClient {
@@ -12,5 +12,5 @@ public interface GitHubClient {
 
     List<EventResponse> fetchEvents(String owner, String repository);
 
-    UpdateInfo checkForUpdate(Link link);
+    UpdateInfo checkForUpdate(String url, OffsetDateTime lastUpdated);
 }
