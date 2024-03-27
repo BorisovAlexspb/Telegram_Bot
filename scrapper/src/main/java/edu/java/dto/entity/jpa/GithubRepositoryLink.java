@@ -1,5 +1,6 @@
 package edu.java.dto.entity.jpa;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,6 +15,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Entity
+@DiscriminatorValue("GITHUB_REPO")
 public class GithubRepositoryLink extends Link {
 
     @Builder

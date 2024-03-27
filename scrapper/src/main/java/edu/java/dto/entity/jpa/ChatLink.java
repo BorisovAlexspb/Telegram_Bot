@@ -26,11 +26,11 @@ public class ChatLink {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Chat_id")
+    @JoinColumn(name = "chat_id")
     private Chat chat;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Link_id")
+    @JoinColumn(name = "link_id")
     private Link link;
 
     public void setChat(Chat chat) {

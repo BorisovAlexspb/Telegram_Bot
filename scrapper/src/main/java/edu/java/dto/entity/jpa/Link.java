@@ -1,6 +1,7 @@
 package edu.java.dto.entity.jpa;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
@@ -22,27 +24,28 @@ import org.springframework.data.annotation.CreatedDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = "chatLinks")
-//@EqualsAndHashCode(of = "url")
+@EqualsAndHashCode(of = "url")
 @Entity
 @Table(name = "link")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type")
 public abstract class Link {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "URL", unique = true, nullable = false)
+    @Column(name = "url", unique = true, nullable = false)
     private String url;
 
-    @Column(name = "Checked_at")
+    @Column(name = "checked_at")
     private OffsetDateTime checkedAt;
 
-    @Column(name = "Last_updated")
+    @Column(name = "last_updated")
     private OffsetDateTime lastUpdatedAt;
 
     @CreatedDate
-    @Column(name = "Created_at")
+    @Column(name = "created_at")
     private OffsetDateTime createdAt;
 
     @OneToMany(mappedBy = "link")
