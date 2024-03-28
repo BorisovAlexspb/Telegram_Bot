@@ -1,6 +1,4 @@
 package edu.java.dto.bot;
 
-import java.net.URI;
-
-public record AddLinkRequest(URI link) {
+public record AddLinkRequest(String link) {
 }

@@ -1,4 +1,4 @@
-package edu.java.dto.entity;
+package edu.java.dto.entity.jdbc;
 
 public enum LinkType {
 

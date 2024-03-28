@@ -1,14 +1,14 @@
 package edu.java.client.stackoverflow;
 
-import edu.java.dto.entity.UpdateInfo;
+import edu.java.dto.entity.jdbc.UpdateInfo;
 import edu.java.dto.stackoverflow.QuestionsResponse;
-import edu.java.model.Link;
 import jakarta.validation.constraints.NotNull;
+import java.time.OffsetDateTime;
 
 public interface StackOverflowClient {
     QuestionsResponse getLastModificationTime(@NotNull long questionId);
 
-    UpdateInfo checkForUpdate(Link link, int answerCount);
+    UpdateInfo checkForUpdate(String url, OffsetDateTime lastUpdated, int answerCount);
 
     Long getQuestionId(String url);
 }

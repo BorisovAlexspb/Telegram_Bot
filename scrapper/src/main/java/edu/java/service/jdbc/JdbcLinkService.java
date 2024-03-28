@@ -8,20 +8,19 @@ import edu.java.dto.bot.AddLinkRequest;
 import edu.java.dto.bot.LinkResponse;
 import edu.java.dto.bot.ListLinksResponse;
 import edu.java.dto.bot.RemoveLinkRequest;
-import edu.java.dto.entity.LinkType;
-import edu.java.dto.entity.Question;
+import edu.java.dto.entity.jdbc.Link;
+import edu.java.dto.entity.jdbc.LinkType;
+import edu.java.dto.entity.jdbc.Question;
 import edu.java.exception.LinkAlreadyTrackedException;
-import edu.java.model.Link;
+import edu.java.exception.LinkNotFoundException;
 import edu.java.service.LinkService;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import static edu.java.dto.entity.LinkType.STACKOVERFLOW_QUESTION;
+import static edu.java.dto.entity.jdbc.LinkType.STACKOVERFLOW_QUESTION;
 
 @SuppressWarnings("LineLength")
-@Service
 @RequiredArgsConstructor
 public class JdbcLinkService implements LinkService {
 
@@ -33,7 +32,7 @@ public class JdbcLinkService implements LinkService {
     @Override
     @Transactional
     public LinkResponse add(long chatId, AddLinkRequest addLinkRequest) {
-        Link link = linkRepository.findLink(addLinkRequest.link().toString());
+        Link link = linkRepository.findLink(addLinkRequest.link());
         if (link != null && chatLinkRepository.isLinkPresentInChat(link, chatId)) {
             throw new LinkAlreadyTrackedException("link is already tracked");
         }
@@ -66,7 +65,7 @@ public class JdbcLinkService implements LinkService {
     public LinkResponse remove(long chatId, RemoveLinkRequest removeLinkRequest) {
         Link link = linkRepository.findLink(removeLinkRequest.uri().toString());
         if (link == null || !chatLinkRepository.isLinkPresentInChat(link, chatId)) {
-            throw new LinkAlreadyTrackedException("Can not remove cause I did not track this link");
+            throw new LinkNotFoundException("Can not remove cause I did not track this link");
         }
 
         chatLinkRepository.remove(chatId, link);

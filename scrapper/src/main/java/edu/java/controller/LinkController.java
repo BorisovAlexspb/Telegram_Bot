@@ -5,7 +5,6 @@ import edu.java.dto.bot.LinkResponse;
 import edu.java.dto.bot.ListLinksResponse;
 import edu.java.dto.bot.RemoveLinkRequest;
 import edu.java.service.LinkService;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +17,7 @@ public class LinkController {
 
     private LinkService linkService;
 
-    public LinkController(@Qualifier("jdbcLinkService") LinkService linkService) {
+    public LinkController(LinkService linkService) {
         this.linkService = linkService;
     }
 

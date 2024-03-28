@@ -2,8 +2,8 @@ package edu.java.scrapper.domain.jdbc;
 
 import edu.java.domain.repository.jdbc.JdbcLinkRepository;
 import edu.java.domain.repository.jdbc.JdbcQuestionRepository;
-import edu.java.dto.entity.Question;
-import edu.java.model.Link;
+import edu.java.dto.entity.jdbc.Question;
+import edu.java.dto.entity.jdbc.Link;
 import edu.java.scrapper.IntegrationTest;
 import java.util.List;
 import org.junit.jupiter.api.Test;

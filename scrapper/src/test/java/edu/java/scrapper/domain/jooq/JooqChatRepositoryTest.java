@@ -1,7 +1,7 @@
 package edu.java.scrapper.domain.jooq;
 
 import edu.java.domain.repository.jooq.JooqChatRepository;
-import edu.java.model.Chat;
+import edu.java.dto.entity.jdbc.Chat;
 import edu.java.scrapper.IntegrationTest;
 import org.jooq.DSLContext;
 import org.junit.jupiter.api.Test;

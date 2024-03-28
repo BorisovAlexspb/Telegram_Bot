@@ -5,12 +5,10 @@ import edu.java.exception.ChatAlreadyRegisteredException;
 import edu.java.exception.ChatNotFoundException;
 import edu.java.service.ChatService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 // тот же код что и в Jdbc сервисах
-@Service
 @RequiredArgsConstructor
 public class JooqChatService implements ChatService {
 

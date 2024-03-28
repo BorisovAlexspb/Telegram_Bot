@@ -1,4 +1,4 @@
-package edu.java.model;
+package edu.java.dto.entity.jdbc;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

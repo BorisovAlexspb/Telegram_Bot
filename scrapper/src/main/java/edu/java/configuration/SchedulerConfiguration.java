@@ -2,7 +2,6 @@ package edu.java.configuration;
 
 import edu.java.controller.LinkUpdaterScheduler;
 import edu.java.service.update.LinkUpdater;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,7 +10,7 @@ public class SchedulerConfiguration {
 
     private final LinkUpdater linkUpdater;
 
-    public SchedulerConfiguration(@Qualifier("jdbcLinkUpdater") LinkUpdater linkUpdater) {
+    public SchedulerConfiguration(LinkUpdater linkUpdater) {
         this.linkUpdater = linkUpdater;
     }
 

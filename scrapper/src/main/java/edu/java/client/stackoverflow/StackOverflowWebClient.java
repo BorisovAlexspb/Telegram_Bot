@@ -1,8 +1,7 @@
 package edu.java.client.stackoverflow;
 
-import edu.java.dto.entity.UpdateInfo;
+import edu.java.dto.entity.jdbc.UpdateInfo;
 import edu.java.dto.stackoverflow.QuestionsResponse;
-import edu.java.model.Link;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.OffsetDateTime;
@@ -34,10 +33,10 @@ public class StackOverflowWebClient implements StackOverflowClient {
     }
 
     @Override
-    public UpdateInfo checkForUpdate(Link link, int answerCount) {
-        QuestionsResponse response = getLastModificationTime(getQuestionId(link.getUrl()));
+    public UpdateInfo checkForUpdate(String url, OffsetDateTime lastUpdated, int answerCount) {
+        QuestionsResponse response = getLastModificationTime(getQuestionId(url));
         var question = response.items().getFirst();
-        if (question.lastActivityDate().isAfter(link.getUpdatedAt())) {
+        if (question.lastActivityDate().isAfter(lastUpdated)) {
             if (question.answerCount() > answerCount) {
                 return new UpdateInfo(true, question.lastActivityDate(), "Появился новый ответ");
             }
