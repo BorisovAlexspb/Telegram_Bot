@@ -14,13 +14,11 @@ import edu.java.dto.entity.jdbc.UpdateInfo;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import static edu.java.dto.entity.jdbc.LinkType.GITHUB_REPO;
 import static edu.java.dto.entity.jdbc.LinkType.STACKOVERFLOW_QUESTION;
 
 @SuppressWarnings("LineLength")
-@Service
 @RequiredArgsConstructor
 public class JdbcLinkUpdater implements LinkUpdater {
     private static final Duration THRESHOLD = Duration.ofDays(1L);

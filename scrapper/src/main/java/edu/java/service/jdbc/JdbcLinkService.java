@@ -17,12 +17,10 @@ import edu.java.service.LinkService;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import static edu.java.dto.entity.jdbc.LinkType.STACKOVERFLOW_QUESTION;
 
 @SuppressWarnings("LineLength")
-@Service
 @RequiredArgsConstructor
 public class JdbcLinkService implements LinkService {
 
