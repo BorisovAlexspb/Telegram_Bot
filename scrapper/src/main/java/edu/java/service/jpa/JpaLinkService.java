@@ -80,7 +80,7 @@ public class JpaLinkService implements LinkService {
     @Transactional
     public LinkResponse remove(long chatId, RemoveLinkRequest removeLinkRequest) {
         Optional<ChatLink> chatLinkOptional =
-            chatLinkRepository.findChatLinkByChatIdAndLinkUrl(chatId, removeLinkRequest.uri().toString());
+            chatLinkRepository.findChatLinkByChatIdAndLinkUrl(chatId, removeLinkRequest.link());
 
         if (chatLinkOptional.isEmpty()) {
             throw new LinkNotFoundException("Can not remove cause I did not track this link");

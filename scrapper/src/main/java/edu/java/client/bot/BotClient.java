@@ -1,4 +1,4 @@
-package edu.java.client.scrapper;
+package edu.java.client.bot;
 
 import edu.java.dto.bot.LinkUpdateRequest;
 import java.util.Optional;

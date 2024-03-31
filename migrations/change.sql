@@ -1,0 +1,13 @@
+-- ALTER TABLE chat_link DROP CONSTRAINT chat_link_chat_id_fkey;
+-- ALTER TABLE chat_link DROP CONSTRAINT chat_link_link_id_fkey;
+-- ALTER TABLE chat_link ADD CONSTRAINT unique_chat_link UNIQUE (chat_id, link_id);
+
+-- ALTER TABLE chat_link
+--     ADD CONSTRAINT chat_link_chat_id_fkey
+--         FOREIGN KEY (chat_id)
+--             REFERENCES chat(id);
+--
+-- ALTER TABLE chat_link
+--     ADD CONSTRAINT chat_link_link_id_fkey
+--         FOREIGN KEY (link_id)
+--             REFERENCES link(id);

@@ -24,25 +24,23 @@ public class JdbcChatLinkRepository implements ChatLinkRepository {
 
     @Override
     public void add(Integer linkId, Long chatId) {
-        jdbcClient.sql("INSERT INTO chat_link VALUES (?, ?)")
-                .params(linkId, chatId)
+        jdbcClient.sql("INSERT INTO chat_link (chat_id, link_id) VALUES (?, ?)")
+                .params(chatId, linkId)
                 .update();
     }
 
     @Override
     public List<Link> findLinksByChat(long chatId) {
         return jdbcClient.sql("""
-                        SELECT
-                           l.ID,
-                           l.URL,
-                           l.Checked_at,
-                           l.Last_updated,
-                           l.Created_at
-                        FROM link l
-                        JOIN
-                            chat_link cl ON l.Id = cl.Link_id
-                        WHERE cl.Chat_id = ?
-                        """)
+                        SELECT  l.id,
+                                l.url,
+                                l.last_updated,
+                                l.checked_at,
+                                l.created_at
+                                FROM link l
+                                JOIN chat_link cl ON l.id = cl.link_id
+                                WHERE cl.chat_id = ?
+                                """)
                 .param(chatId)
                 .query(Link.class)
                 .list();
@@ -69,7 +67,7 @@ public class JdbcChatLinkRepository implements ChatLinkRepository {
     @Override
     public List<Long> findAllChatIdsByLinkId(Long linkId) {
         return jdbcClient.sql("""
-                        SELECT chat_id FROM .chat_link
+                        SELECT chat_id FROM chat_link
                         WHERE Link_id = ?
                         """
                 )

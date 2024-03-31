@@ -63,7 +63,7 @@ public class JooqLinkService implements LinkService {
     @Override
     @Transactional
     public LinkResponse remove(long chatId, RemoveLinkRequest removeLinkRequest) {
-        Link link = linkRepository.findLink(removeLinkRequest.uri().toString());
+        Link link = linkRepository.findLink(removeLinkRequest.link());
         if (link == null || !chatLinkRepository.isLinkPresentInChat(link, chatId)) {
             throw new LinkAlreadyTrackedException("Can not remove cause I did not track this link");
         }

@@ -20,3 +20,9 @@ logging:
 springdoc:
   swagger-ui:
     path: /swagger.html
+
+scrapper:
+  base-url: http://localhost:8080
+
+bot:
+  token: 6735044019:AAEwc_M52Q6wghQwKJhOdkL7qMJzSEfuGhY

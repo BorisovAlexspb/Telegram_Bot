@@ -37,23 +37,30 @@ public class JdbcLinkService implements LinkService {
             throw new LinkAlreadyTrackedException("link is already tracked");
         }
 
-        Link linkToSave = new Link(
+        Link linkToSave = link;
+
+        if (link == null) {
+            linkToSave = new Link(
                 null,
-                addLinkRequest.link().toString(),
+                addLinkRequest.link(),
                 null,
                 null,
                 OffsetDateTime.now()
-        );
-
-        if (link == null) {
+            );
             linkRepository.addLink(linkToSave);
             if (LinkType.getTypeOfLink(linkToSave.getUrl()) == STACKOVERFLOW_QUESTION) {
                 var question = stackOverflowWebClient
-                        .getLastModificationTime(stackOverflowWebClient.getQuestionId(linkToSave.getUrl()))
-                        .items()
-                        .getFirst();
-                questionRepository.saveQuestion(new Question(null, question.answerCount(), linkToSave.getId().longValue()));
+                    .getLastModificationTime(stackOverflowWebClient.getQuestionId(linkToSave.getUrl()))
+                    .items()
+                    .getFirst();
+                questionRepository.saveQuestion(new Question(
+                    null,
+                    question.answerCount(),
+                    linkToSave.getId().longValue()
+                ));
             }
+
+            linkToSave = linkRepository.findLink(linkToSave.getUrl());
         }
 
         chatLinkRepository.add(linkToSave.getId(), chatId);
@@ -63,7 +70,7 @@ public class JdbcLinkService implements LinkService {
     @Override
     @Transactional
     public LinkResponse remove(long chatId, RemoveLinkRequest removeLinkRequest) {
-        Link link = linkRepository.findLink(removeLinkRequest.uri().toString());
+        Link link = linkRepository.findLink(removeLinkRequest.link());
         if (link == null || !chatLinkRepository.isLinkPresentInChat(link, chatId)) {
             throw new LinkNotFoundException("Can not remove cause I did not track this link");
         }
@@ -79,9 +86,9 @@ public class JdbcLinkService implements LinkService {
     @Transactional
     public ListLinksResponse listAll(long chatId) {
         List<LinkResponse> links = chatLinkRepository.findLinksByChat(chatId)
-                .stream()
-                .map(link -> new LinkResponse(link.getId().longValue(), link.getUrl()))
-                .toList();
+            .stream()
+            .map(link -> new LinkResponse(link.getId().longValue(), link.getUrl()))
+            .toList();
         return new ListLinksResponse(links, links.size());
     }
 }

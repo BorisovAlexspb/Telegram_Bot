@@ -1,7 +1,7 @@
 package edu.java.configuration.access;
 
+import edu.java.client.bot.BotClient;
 import edu.java.client.github.GitHubClient;
-import edu.java.client.scrapper.BotClient;
 import edu.java.client.stackoverflow.StackOverflowClient;
 import edu.java.domain.repository.jdbc.JdbcChatLinkRepository;
 import edu.java.domain.repository.jdbc.JdbcChatRepository;

@@ -16,13 +16,13 @@ public class ChatController {
         this.chatService = chatService;
     }
 
-    @PostMapping("/tg-chat/id")
+    @PostMapping("/tg-chat/{id}")
     public ResponseEntity<String> registerChat(@PathVariable Long id) {
         chatService.register(id);
         return ResponseEntity.ok("Чат зарегистрирован");
     }
 
-    @DeleteMapping("/tg-chat/id")
+    @DeleteMapping("/tg-chat/{id}")
     public ResponseEntity<String> deleteChat(@PathVariable Long id) {
         chatService.unregister(id);
         return ResponseEntity.ok("Чат успешно удалён");

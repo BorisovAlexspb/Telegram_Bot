@@ -1,7 +1,7 @@
 package edu.java.service.update;
 
+import edu.java.client.bot.BotClient;
 import edu.java.client.github.GitHubClient;
-import edu.java.client.scrapper.BotClient;
 import edu.java.client.stackoverflow.StackOverflowClient;
 import edu.java.domain.repository.jdbc.JdbcChatLinkRepository;
 import edu.java.domain.repository.jdbc.JdbcLinkRepository;
@@ -42,16 +42,17 @@ public class JdbcLinkUpdater implements LinkUpdater {
                 updateInfo = githubClient.checkForUpdate(link.getUrl(), link.getUpdatedAt());
             } else if (LinkType.getTypeOfLink(link.getUrl()) == STACKOVERFLOW_QUESTION) {
                 Question question = questionRepository.findByLinkId(link.getId().longValue());
-                updateInfo = stackOverflowClient.checkForUpdate(link.getUrl(), link.getUpdatedAt(), question.getAnswerCount());
+                updateInfo =
+                    stackOverflowClient.checkForUpdate(link.getUrl(), link.getUpdatedAt(), question.getAnswerCount());
             }
 
             if (updateInfo.isNewUpdate()) {
                 botClient.sendUpdate(new LinkUpdateRequest(
-                                link.getId().longValue(),
-                                link.getUrl(),
-                                updateInfo.message(),
-                                chatLinkRepository.findAllChatIdsByLinkId(Long.valueOf(link.getId()))
-                        )
+                        link.getId().longValue(),
+                        link.getUrl(),
+                        updateInfo.message(),
+                        chatLinkRepository.findAllChatIdsByLinkId(Long.valueOf(link.getId()))
+                    )
                 );
                 updatedCount++;
             }
