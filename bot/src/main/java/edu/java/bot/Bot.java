@@ -1,8 +1,8 @@
 package edu.java.bot;
 
+import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.messageProcessor.MessageProcessor;
 import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -14,8 +14,8 @@ public class Bot extends TelegramLongPollingBot {
 
     private final MessageProcessor processor;
 
-    public Bot(@Value("${bot.token}") String botToken, MessageProcessor processor) {
-        super(botToken);
+    public Bot(ApplicationConfig applicationConfig, MessageProcessor processor) {
+        super(applicationConfig.telegramToken());
         this.processor = processor;
     }
 
