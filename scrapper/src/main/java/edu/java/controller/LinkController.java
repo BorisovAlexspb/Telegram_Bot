@@ -24,6 +24,7 @@ public class LinkController {
 
     @GetMapping("/links")
     public ListLinksResponse getAllLinks(@RequestParam(name = "Tg-Chat-id") Long id) {
+
         return linkService.listAll(id);
     }
 
