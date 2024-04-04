@@ -8,21 +8,19 @@ import edu.java.dto.bot.AddLinkRequest;
 import edu.java.dto.bot.LinkResponse;
 import edu.java.dto.bot.ListLinksResponse;
 import edu.java.dto.bot.RemoveLinkRequest;
-import edu.java.dto.entity.LinkType;
-import edu.java.dto.entity.Question;
+import edu.java.dto.entity.jdbc.Link;
+import edu.java.dto.entity.jdbc.LinkType;
+import edu.java.dto.entity.jdbc.Question;
 import edu.java.exception.LinkAlreadyTrackedException;
-import edu.java.model.Link;
 import edu.java.service.LinkService;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import static edu.java.dto.entity.LinkType.STACKOVERFLOW_QUESTION;
+import static edu.java.dto.entity.jdbc.LinkType.STACKOVERFLOW_QUESTION;
 
 // тот же код что и в Jdbc сервисе
 @SuppressWarnings("LineLength")
-@Service
 @RequiredArgsConstructor
 public class JooqLinkService implements LinkService {
 
@@ -65,7 +63,7 @@ public class JooqLinkService implements LinkService {
     @Override
     @Transactional
     public LinkResponse remove(long chatId, RemoveLinkRequest removeLinkRequest) {
-        Link link = linkRepository.findLink(removeLinkRequest.uri().toString());
+        Link link = linkRepository.findLink(removeLinkRequest.link());
         if (link == null || !chatLinkRepository.isLinkPresentInChat(link, chatId)) {
             throw new LinkAlreadyTrackedException("Can not remove cause I did not track this link");
         }

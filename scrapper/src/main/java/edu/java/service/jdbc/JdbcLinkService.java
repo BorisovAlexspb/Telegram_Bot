@@ -8,20 +8,19 @@ import edu.java.dto.bot.AddLinkRequest;
 import edu.java.dto.bot.LinkResponse;
 import edu.java.dto.bot.ListLinksResponse;
 import edu.java.dto.bot.RemoveLinkRequest;
-import edu.java.dto.entity.LinkType;
-import edu.java.dto.entity.Question;
+import edu.java.dto.entity.jdbc.Link;
+import edu.java.dto.entity.jdbc.LinkType;
+import edu.java.dto.entity.jdbc.Question;
 import edu.java.exception.LinkAlreadyTrackedException;
-import edu.java.model.Link;
+import edu.java.exception.LinkNotFoundException;
 import edu.java.service.LinkService;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import static edu.java.dto.entity.LinkType.STACKOVERFLOW_QUESTION;
+import static edu.java.dto.entity.jdbc.LinkType.STACKOVERFLOW_QUESTION;
 
 @SuppressWarnings("LineLength")
-@Service
 @RequiredArgsConstructor
 public class JdbcLinkService implements LinkService {
 
@@ -33,28 +32,35 @@ public class JdbcLinkService implements LinkService {
     @Override
     @Transactional
     public LinkResponse add(long chatId, AddLinkRequest addLinkRequest) {
-        Link link = linkRepository.findLink(addLinkRequest.link().toString());
+        Link link = linkRepository.findLink(addLinkRequest.link());
         if (link != null && chatLinkRepository.isLinkPresentInChat(link, chatId)) {
             throw new LinkAlreadyTrackedException("link is already tracked");
         }
 
-        Link linkToSave = new Link(
+        Link linkToSave = link;
+
+        if (link == null) {
+            linkToSave = new Link(
                 null,
-                addLinkRequest.link().toString(),
+                addLinkRequest.link(),
                 null,
                 null,
                 OffsetDateTime.now()
-        );
-
-        if (link == null) {
+            );
             linkRepository.addLink(linkToSave);
             if (LinkType.getTypeOfLink(linkToSave.getUrl()) == STACKOVERFLOW_QUESTION) {
                 var question = stackOverflowWebClient
-                        .getLastModificationTime(stackOverflowWebClient.getQuestionId(linkToSave.getUrl()))
-                        .items()
-                        .getFirst();
-                questionRepository.saveQuestion(new Question(null, question.answerCount(), linkToSave.getId().longValue()));
+                    .getLastModificationTime(stackOverflowWebClient.getQuestionId(linkToSave.getUrl()))
+                    .items()
+                    .getFirst();
+                questionRepository.saveQuestion(new Question(
+                    null,
+                    question.answerCount(),
+                    linkToSave.getId().longValue()
+                ));
             }
+
+            linkToSave = linkRepository.findLink(linkToSave.getUrl());
         }
 
         chatLinkRepository.add(linkToSave.getId(), chatId);
@@ -64,9 +70,9 @@ public class JdbcLinkService implements LinkService {
     @Override
     @Transactional
     public LinkResponse remove(long chatId, RemoveLinkRequest removeLinkRequest) {
-        Link link = linkRepository.findLink(removeLinkRequest.uri().toString());
+        Link link = linkRepository.findLink(removeLinkRequest.link());
         if (link == null || !chatLinkRepository.isLinkPresentInChat(link, chatId)) {
-            throw new LinkAlreadyTrackedException("Can not remove cause I did not track this link");
+            throw new LinkNotFoundException("Can not remove cause I did not track this link");
         }
 
         chatLinkRepository.remove(chatId, link);
@@ -80,9 +86,9 @@ public class JdbcLinkService implements LinkService {
     @Transactional
     public ListLinksResponse listAll(long chatId) {
         List<LinkResponse> links = chatLinkRepository.findLinksByChat(chatId)
-                .stream()
-                .map(link -> new LinkResponse(link.getId().longValue(), link.getUrl()))
-                .toList();
+            .stream()
+            .map(link -> new LinkResponse(link.getId().longValue(), link.getUrl()))
+            .toList();
         return new ListLinksResponse(links, links.size());
     }
 }

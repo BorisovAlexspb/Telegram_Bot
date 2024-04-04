@@ -1,6 +1,6 @@
 package edu.java.domain.repository;
 
-import edu.java.dto.entity.Question;
+import edu.java.dto.entity.jdbc.Question;
 
 public interface QuestionRepository {
 

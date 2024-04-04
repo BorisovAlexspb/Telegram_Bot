@@ -1,14 +1,14 @@
-package edu.java.domain.jdbc;
+package edu.java.domain.repository.jdbc;
 
-import edu.java.domain.LinkRepository;
-import edu.java.model.Link;
+import edu.java.domain.repository.LinkRepository;
+import edu.java.dto.entity.jdbc.Link;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -20,8 +20,9 @@ public class JdbcLinkRepository implements LinkRepository {
 
     @Override
     public void addLink(Link link) {
-        jdbcClient.sql("INSERT INTO link(URL) VALUES (?) RETURNING ID")
-            .param(link.getUrl());
+        jdbcClient.sql("INSERT INTO link (url) VALUES (?)")
+            .param(link.getUrl())
+            .update();
     }
 
     @Override
@@ -33,15 +34,38 @@ public class JdbcLinkRepository implements LinkRepository {
 
     @Override
     public Link findLink(String url) {
-        return jdbcClient.sql("SELECT * FROM link WHERE URL = ? ")
-            .param(url)
-            .query(Link.class)
-            .single();
+        try {
+            return jdbcClient.sql("""
+                                SELECT
+                        id,
+                        url,
+                        last_updated,
+                        checked_at,
+                        created_at
+                    FROM link
+                    WHERE url = ?
+                    """
+                )
+                .param(url)
+                .query(Link.class)
+                .single();
+        } catch (EmptyResultDataAccessException exception) {
+            return null;
+        }
     }
 
     @Override
     public List<Link> findAll() {
-        return jdbcClient.sql("SELECT * FROM link")
+        return jdbcClient.sql("""
+                SELECT
+                    id,
+                    url,
+                    last_updated,
+                    checked_at,
+                    created_at
+                FROM link
+                """
+            )
             .query(Link.class)
             .list();
     }
@@ -56,7 +80,17 @@ public class JdbcLinkRepository implements LinkRepository {
         LocalDateTime thresholdDateTime = LocalDateTime.now().minus(threshold);
         OffsetDateTime thresholdOffsetDateTime = thresholdDateTime.atOffset(ZoneOffset.UTC);
 
-        return jdbcClient.sql("SELECT * FROM link WHERE Checked_at < ?")
+        return jdbcClient.sql("""
+                SELECT
+                    ID,
+                    URL,
+                    Last_updated,
+                    Checked_at,
+                    Created_at
+                FROM link
+                WHERE Checked_at < ?
+                """
+            )
             .param(thresholdOffsetDateTime)
             .query(Link.class)
             .list();
