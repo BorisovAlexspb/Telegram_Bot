@@ -1,6 +1,6 @@
 package edu.java.domain.repository;
 
-import edu.java.model.Link;
+import edu.java.dto.entity.jdbc.Link;
 import java.util.List;
 
 public interface ChatLinkRepository {

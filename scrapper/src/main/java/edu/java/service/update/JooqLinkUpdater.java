@@ -1,25 +1,24 @@
 package edu.java.service.update;
 
+import edu.java.client.bot.BotClient;
 import edu.java.client.github.GitHubClient;
-import edu.java.client.scrapper.BotClient;
 import edu.java.client.stackoverflow.StackOverflowClient;
 import edu.java.domain.repository.jooq.JooqChatLinkRepository;
 import edu.java.domain.repository.jooq.JooqLinkRepository;
 import edu.java.domain.repository.jooq.JooqQuestionRepository;
 import edu.java.dto.bot.LinkUpdateRequest;
-import edu.java.dto.entity.LinkType;
-import edu.java.dto.entity.Question;
-import edu.java.dto.entity.UpdateInfo;
-import edu.java.model.Link;
+import edu.java.dto.entity.jdbc.Link;
+import edu.java.dto.entity.jdbc.LinkType;
+import edu.java.dto.entity.jdbc.Question;
+import edu.java.dto.entity.jdbc.UpdateInfo;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import static edu.java.dto.entity.LinkType.GITHUB_REPO;
-import static edu.java.dto.entity.LinkType.STACKOVERFLOW_QUESTION;
+import static edu.java.dto.entity.jdbc.LinkType.GITHUB_REPO;
+import static edu.java.dto.entity.jdbc.LinkType.STACKOVERFLOW_QUESTION;
 
-@Service
+@SuppressWarnings("LineLength")
 @RequiredArgsConstructor
 public class JooqLinkUpdater implements LinkUpdater {
     private static final Duration THRESHOLD = Duration.ofDays(1L);
@@ -41,19 +40,20 @@ public class JooqLinkUpdater implements LinkUpdater {
             UpdateInfo updateInfo = new UpdateInfo(false, link.getUpdatedAt(), "Обновлений нет");
 
             if (LinkType.getTypeOfLink(link.getUrl()) == GITHUB_REPO) {
-                updateInfo = githubClient.checkForUpdate(link);
+                updateInfo = githubClient.checkForUpdate(link.getUrl(), link.getUpdatedAt());
             } else if (LinkType.getTypeOfLink(link.getUrl()) == STACKOVERFLOW_QUESTION) {
                 Question question = questionRepository.findByLinkId(link.getId().longValue());
-                updateInfo = stackOverflowClient.checkForUpdate(link, question.getAnswerCount());
+                updateInfo =
+                    stackOverflowClient.checkForUpdate(link.getUrl(), link.getUpdatedAt(), question.getAnswerCount());
             }
 
             if (updateInfo.isNewUpdate()) {
                 botClient.sendUpdate(new LinkUpdateRequest(
-                                link.getId().longValue(),
-                                link.getUrl(),
-                                updateInfo.message(),
-                                chatLinkRepository.findAllChatIdsByLinkId(Long.valueOf(link.getId()))
-                        )
+                        link.getId().longValue(),
+                        link.getUrl(),
+                        updateInfo.message(),
+                        chatLinkRepository.findAllChatIdsByLinkId(Long.valueOf(link.getId()))
+                    )
                 );
                 updatedCount++;
             }
