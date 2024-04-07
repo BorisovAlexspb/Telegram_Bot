@@ -12,12 +12,18 @@ import edu.java.client.stackoverflow.StackOverflowWebClient;
 import edu.java.dto.stackoverflow.QuestionResponse;
 import edu.java.dto.stackoverflow.QuestionsResponse;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest
 public class StackoverflowClientTest {
 
+    @Autowired
+    private ExchangeFilterFunction filterFunction;
     private WireMockServer wireMockServer = new WireMockServer(8080);
-    private final StackOverflowClient client = new StackOverflowWebClient("http://localhost:8080");
+    private final StackOverflowClient client = new StackOverflowWebClient("http://localhost:8080",filterFunction);
     @Test
     public void test() {
         wireMockServer.start();

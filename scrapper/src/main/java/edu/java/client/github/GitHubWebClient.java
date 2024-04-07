@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import static edu.java.dto.github.EventType.UNKNOWN;
 
@@ -21,12 +22,18 @@ public class GitHubWebClient implements GitHubClient {
     private String baseUrl;
     private final WebClient webClient;
 
-    public GitHubWebClient() {
-        this.webClient = WebClient.create(baseUrl);
+    public GitHubWebClient(ExchangeFilterFunction filterFunction) {
+        this.webClient = WebClient.builder()
+            .baseUrl(baseUrl)
+            .filter(filterFunction)
+            .build();
     }
 
-    public GitHubWebClient(String url) {
-        this.webClient = WebClient.create(url);
+    public GitHubWebClient(String url, ExchangeFilterFunction filterFunction) {
+        this.webClient = WebClient.builder()
+            .baseUrl(url)
+            .filter(filterFunction)
+            .build();
     }
 
     @Override

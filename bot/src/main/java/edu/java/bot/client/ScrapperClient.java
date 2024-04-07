@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -20,8 +21,12 @@ public class ScrapperClient {
     private final static String PATH_TO_LINK = "/links";
     private final static String HEADER_NAME = "Tg-Chat-Id";
 
-    public ScrapperClient(@Value("${scrapper.base-url}") String baseUrl) {
-        this.webClient = WebClient.create(baseUrl);
+    public ScrapperClient(@Value("${scrapper.base-url}") String baseUrl, ExchangeFilterFunction filterFunction) {
+        this.webClient = WebClient
+            .builder()
+            .baseUrl(baseUrl)
+            .filter(filterFunction)
+            .build();
     }
 
     public String registerChat(Long id) {
