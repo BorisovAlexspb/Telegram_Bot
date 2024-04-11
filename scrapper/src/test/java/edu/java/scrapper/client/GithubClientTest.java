@@ -10,12 +10,21 @@ import edu.java.client.github.GitHubClient;
 import edu.java.client.github.GitHubWebClient;
 import edu.java.dto.github.RepositoryResponse;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest
+@DirtiesContext
 public class GithubClientTest {
 
+    @Autowired
+    private ExchangeFilterFunction filterFunction;
+
     private WireMockServer wireMockServer = new WireMockServer();
-    GitHubClient client = new GitHubWebClient("http://localhost:8080");
+    GitHubClient client = new GitHubWebClient("http://localhost:8080",filterFunction);
     private static final String TEST_JSON = "{\"updated_at\": \"2023-08-01T19:20:49Z\"," +
         "\"name\": \"BorisovAlexspb\"}";
 

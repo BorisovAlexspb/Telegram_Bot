@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.OffsetDateTime;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class StackOverflowWebClient implements StackOverflowClient {
@@ -14,12 +15,18 @@ public class StackOverflowWebClient implements StackOverflowClient {
     private String baseUrl;
     private final WebClient webClient;
 
-    public StackOverflowWebClient() {
-        this.webClient = WebClient.create(baseUrl);
+    public StackOverflowWebClient(ExchangeFilterFunction filterFunction) {
+        this.webClient = WebClient.builder()
+            .baseUrl(baseUrl)
+            .filter(filterFunction)
+            .build();
     }
 
-    public StackOverflowWebClient(String url) {
-        this.webClient = WebClient.create(url);
+    public StackOverflowWebClient(String url, ExchangeFilterFunction filterFunction) {
+        this.webClient = WebClient.builder()
+            .baseUrl(url)
+            .filter(filterFunction)
+            .build();
     }
 
     @Override

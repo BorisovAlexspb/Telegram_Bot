@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -15,8 +16,12 @@ import reactor.core.publisher.Mono;
 public class BotWebClient implements BotClient {
     private final WebClient webClient;
 
-    public BotWebClient(@Value("${bot.base-url}") String baseURL) {
-        this.webClient = WebClient.create(baseURL);
+    public BotWebClient(@Value("${bot.base-url}") String baseURL, ExchangeFilterFunction filterFunction) {
+        this.webClient = WebClient
+            .builder()
+            .baseUrl(baseURL)
+            .filter(filterFunction)
+            .build();
     }
 
     @Override
