@@ -1,6 +1,5 @@
 package edu.java.service.update;
 
-import edu.java.client.bot.BotClient;
 import edu.java.client.github.GitHubClient;
 import edu.java.client.stackoverflow.StackOverflowClient;
 import edu.java.domain.repository.jpa.JpaChatLinkRepository;
@@ -11,6 +10,7 @@ import edu.java.dto.entity.jdbc.UpdateInfo;
 import edu.java.dto.entity.jpa.Link;
 import edu.java.dto.entity.jpa.StackOverflowQuestionLink;
 import edu.java.dto.stackoverflow.QuestionResponse;
+import edu.java.service.notification.NotificationService;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -25,7 +25,8 @@ public class JpaLinkUpdater implements LinkUpdater {
     private final JpaLinkRepository linkRepository;
     private final StackOverflowClient stackOverflowClient;
     private final GitHubClient githubClient;
-    private final BotClient botClient;
+//    private final BotClient botClient;
+    private final NotificationService notificationService;
 
     @Transactional
     @Override
@@ -55,7 +56,7 @@ public class JpaLinkUpdater implements LinkUpdater {
             }
 
             if (updateInfo.isNewUpdate()) {
-                botClient.sendUpdate(new LinkUpdateRequest(
+                notificationService.sendUpdateNotification(new LinkUpdateRequest(
                         link.getId(),
                         link.getUrl(),
                         updateInfo.message(),

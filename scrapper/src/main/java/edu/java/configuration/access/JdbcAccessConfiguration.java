@@ -1,6 +1,5 @@
 package edu.java.configuration.access;
 
-import edu.java.client.bot.BotClient;
 import edu.java.client.github.GitHubClient;
 import edu.java.client.stackoverflow.StackOverflowClient;
 import edu.java.domain.repository.jdbc.JdbcChatLinkRepository;
@@ -11,6 +10,7 @@ import edu.java.service.ChatService;
 import edu.java.service.LinkService;
 import edu.java.service.jdbc.JdbcChatService;
 import edu.java.service.jdbc.JdbcLinkService;
+import edu.java.service.notification.NotificationService;
 import edu.java.service.update.JdbcLinkUpdater;
 import edu.java.service.update.LinkUpdater;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -48,7 +48,7 @@ public class JdbcAccessConfiguration {
         JdbcQuestionRepository questionRepository,
         StackOverflowClient stackOverflowClient,
         GitHubClient githubClient,
-        BotClient botClient
+        NotificationService notificationService
     ) {
         return new JdbcLinkUpdater(
             chatLinkRepository,
@@ -56,7 +56,7 @@ public class JdbcAccessConfiguration {
             questionRepository,
             stackOverflowClient,
             githubClient,
-            botClient
+            notificationService
         );
     }
 }
