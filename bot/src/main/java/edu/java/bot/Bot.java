@@ -31,7 +31,6 @@ public class Bot extends TelegramLongPollingBot {
                 throw new RuntimeException(e);
             }
         }
-
         LOG.info("Receive new Update. updateID: " + update.getUpdateId());
     }
 
